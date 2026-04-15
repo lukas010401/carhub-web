@@ -1,0 +1,2476 @@
+﻿@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 100% 99%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --primary: 213 94% 43%;
+    --primary-foreground: 0 0% 100%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 42%;
+    --border: 214 32% 88%;
+    --input: 214 32% 88%;
+    --ring: 213 94% 43%;
+  }
+
+  * {
+    @apply border-border;
+    box-sizing: border-box;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    margin: 0;
+    font-family: 'Segoe UI', 'Trebuchet MS', sans-serif;
+    background:
+      radial-gradient(circle at 92% -18%, rgba(29, 78, 216, 0.12) 0%, transparent 45%),
+      radial-gradient(circle at -8% 118%, rgba(37, 99, 235, 0.08) 0%, transparent 38%),
+      linear-gradient(160deg, #ffffff 0%, #f7faff 55%, #f2f7ff 100%);
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  input,
+  select,
+  textarea,
+  button {
+    font: inherit;
+  }
+}
+
+@layer components {
+  .hero {
+    @apply rounded-2xl border border-border bg-card p-8 shadow-[0_14px_38px_rgba(30,64,175,0.12)];
+  }
+
+  .hero h1 {
+    margin-top: 0;
+    font-size: clamp(1.6rem, 3vw, 2.6rem);
+  }
+
+  .hero p {
+    @apply text-muted-foreground;
+  }
+
+  .grid {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .grid.cards {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+
+  .card {
+    @apply overflow-hidden rounded-2xl border border-border bg-card;
+  }
+
+  .cardBody {
+    @apply p-4;
+  }
+
+  .price {
+    @apply font-bold text-blue-600;
+  }
+
+  .soldBadgeImg {
+    height: 34px;
+    width: auto;
+    object-fit: contain;
+    border-radius: 0.4rem;
+  }
+
+  .listingCard .imgWrap {
+    height: 170px;
+    background: #e8eef9;
+  }
+
+  .listingCard .imgWrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .listingCardLink {
+    display: block;
+    height: 100%;
+  }
+
+  .backLink {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: #1d63d1;
+    font-size: 1.2rem;
+    line-height: 1;
+    width: fit-content;
+  }
+
+  .backLink:hover {
+    color: #1e4fb7;
+  }
+
+  .backLinkArrow {
+    font-size: 1.25rem;
+    line-height: 1;
+  }
+
+  
+  .listingCard {
+    border-radius: 1.1rem;
+    overflow: hidden;
+  }
+
+  .listingCardBody {
+    padding: 1rem 1.1rem 1.2rem;
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  .listingTitle {
+    margin: 0;
+    font-size: 1.15rem;
+    line-height: 1.25;
+    font-weight: 700;
+  }
+
+  .listingProBadge,
+  .accountProfessionalBadge,
+  .navbarProfessionalBadge,
+  .carProfessionalBadge,
+  .authPricingProPill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    border-radius: 999px;
+    border: 1px solid #9ab7f1;
+    background: #dbe9ff;
+    color: #194488;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .listingProBadge {
+    min-width: 2.3rem;
+    padding: 0.16rem 0.52rem;
+  }
+
+  .listingPrice {
+    margin: 0.08rem 0 0.15rem;
+    font-size: 1.05rem;
+    letter-spacing: 0.01em;
+  }
+
+  .listingBrandLine {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    color: #0f1f3a;
+    line-height: 1.3;
+  }
+
+  .listingBrandLogo {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    flex-shrink: 0;
+    border-radius: 999px;
+    border: 1px solid #d5e2fa;
+    background: #fff;
+    padding: 2px;
+  }
+
+  .listingMeta {
+    margin: 0;
+    color: hsl(var(--muted-foreground));
+    line-height: 1.3;
+  }
+
+  .listingDetailBtn {
+    margin-top: 0.45rem;
+    justify-self: start;
+  }
+
+  .sellerStatsGrid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .sellerStatCard {
+    border: 1px solid #d5e3fb;
+    border-radius: 0.9rem;
+    background: linear-gradient(145deg, #ffffff 0%, #f4f8ff 100%);
+    padding: 0.8rem 0.95rem;
+    min-height: 92px;
+    display: grid;
+    align-content: center;
+    gap: 0.2rem;
+  }
+
+  .sellerStatLabel {
+    margin: 0;
+    color: #44618f;
+    font-size: 0.92rem;
+    line-height: 1.2;
+  }
+
+  .sellerStatValue {
+    margin: 0;
+    color: #123564;
+    font-size: clamp(1.35rem, 2.5vw, 1.85rem);
+    font-weight: 800;
+    line-height: 1.05;
+  }
+
+  .sellerTabsRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .sellerTabBtn {
+    min-height: 34px;
+    padding: 0.3rem 0.7rem;
+    font-size: 0.86rem;
+  }
+
+  .sellerToolbar {
+    display: grid;
+    grid-template-columns: 1.8fr minmax(180px, 1fr) auto;
+    gap: 0.6rem;
+    align-items: center;
+  }
+
+  .sellerBulkBar {
+    display: grid;
+    grid-template-columns: 1fr minmax(200px, 1fr) auto;
+    gap: 0.6rem;
+    align-items: center;
+  }
+
+  .sellerBulkBar p {
+    margin: 0;
+    color: #1e3b67;
+    font-weight: 600;
+  }
+
+  .sellerSelectAll {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.92rem;
+    color: #2a426b;
+  }
+
+  .sellerSelectOne {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 0.35rem;
+  }
+
+  .sellerCardHeader {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+  }
+
+  .sellerCardLink {
+    display: block;
+    height: 100%;
+  }
+
+  .sellerListingCard {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .sellerListingCardClickable {
+    cursor: pointer;
+    transition: border-color 120ms ease, box-shadow 120ms ease;
+  }
+
+  .sellerListingCardClickable:hover {
+    border-color: #9fbff0;
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.08);
+  }
+
+  .sellerListingCardBody {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    flex: 1;
+  }
+
+  .sellerListingTop {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    align-items: start;
+  }
+
+  .sellerListingImageWrap {
+    width: 128px;
+    height: 94px;
+    border-radius: 0.65rem;
+    border: 1px solid #d4e2f9;
+    overflow: hidden;
+    background: #eaf2ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sellerListingImageWrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .sellerListingImageFallback {
+    color: #56709a;
+    font-size: 0.82rem;
+    text-align: center;
+    padding: 0.45rem;
+    line-height: 1.25;
+  }
+
+  .sellerListingCoverWrap {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-bottom: 1px solid #d4e2f9;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+    overflow: hidden;
+    background: #eaf2ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sellerListingCoverWrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .sellerListingInfo {
+    display: grid;
+    gap: 0.25rem;
+    align-content: start;
+  }
+
+  .sellerListingPrice {
+    margin: 0;
+    font-size: 1.05rem;
+  }
+
+  .sellerCardActions {
+    margin-top: auto;
+    display: grid;
+    gap: 0.55rem;
+    justify-items: start;
+    min-height: 42px;
+  }
+
+  .sellerRejectedBadge {
+    display: inline-flex;
+    align-items: center;
+    min-height: 38px;
+    border: 1px solid #fecaca;
+    border-radius: 0.7rem;
+    background: #fef2f2;
+    color: #991b1b;
+    font-weight: 700;
+    font-size: 0.88rem;
+    padding: 0.2rem 0.75rem;
+  }
+
+  .sellerCardQuickActions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    align-items: center;
+  }
+
+  .sellerCardActionPicker {
+    display: grid;
+    grid-template-columns: minmax(150px, 1fr) auto;
+    gap: 0.45rem;
+    align-items: center;
+    flex: 1;
+    min-width: min(100%, 330px);
+  }
+
+  .sellerDeleteBtn {
+    border-color: #ef4444;
+    color: #b91c1c;
+    background: #fff1f2;
+  }
+
+  .sellerDeleteBtn:hover {
+    background: #ffe4e6;
+    border-color: #dc2626;
+    color: #991b1b;
+  }
+
+  .sellerDeleteBtn:disabled {
+    opacity: 0.6;
+  }
+
+  .sellerRejectBox {
+    border: 1px solid #f3c9c9;
+    background: #fff7f7;
+    border-radius: 0.6rem;
+    padding: 0.55rem 0.65rem;
+    display: grid;
+    gap: 0.3rem;
+  }
+
+  .sellerRejectBox p {
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .sellerEmptyState {
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .sellerEmptyState h3 {
+    margin: 0;
+    color: #16325d;
+  }
+
+  .listingImagesPreview {
+    display: grid;
+    gap: 0.45rem;
+  }
+
+  .listingEditHeader {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6rem;
+  }
+
+  .listingEditHeader h1 {
+    margin: 0;
+  }
+
+  .listingStatusPill {
+    margin: 0;
+    border-radius: 999px;
+    border: 1px solid #c9d9f5;
+    background: #eef4ff;
+    color: #173b6d;
+    font-weight: 700;
+    font-size: 0.9rem;
+    padding: 0.28rem 0.72rem;
+  }
+
+  .listingStatusPill.status-approved {
+    border-color: #bbf7d0;
+    background: #f0fdf4;
+    color: #166534;
+  }
+
+  .listingStatusPill.status-pendingreview {
+    border-color: #fde68a;
+    background: #fffbeb;
+    color: #92400e;
+  }
+
+  .listingStatusPill.status-rejected {
+    border-color: #fecaca;
+    background: #fef2f2;
+    color: #991b1b;
+  }
+
+  .listingStatusPill.status-sold {
+    border-color: #bfdbfe;
+    background: #eff6ff;
+    color: #1d4ed8;
+  }
+
+  .listingImagesPreviewTitle {
+    margin: 0;
+    font-weight: 700;
+    color: #1c3762;
+  }
+
+  .listingImagesGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(108px, 1fr));
+    gap: 0.55rem;
+  }
+
+  .listingImagesGridLarge {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 0.75rem;
+  }
+
+  .listingImageThumb {
+    border: 1px solid #d3e1f8;
+    border-radius: 0.65rem;
+    overflow: hidden;
+    background: #eef4ff;
+    height: 84px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.2rem;
+  }
+
+  .listingImageThumb img {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
+  .listingImageThumb a {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .listingImageThumbLarge {
+    height: 150px;
+    padding: 0.35rem;
+  }
+
+  .adminReviewCard {
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: 0.9rem;
+    align-items: start;
+  }
+
+  .adminReviewMedia,
+  .adminModerationMedia {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    border-radius: 0.7rem;
+    border: 1px solid #d4e2f9;
+    overflow: hidden;
+    background: #eaf2ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #5976a3;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .adminReviewMedia img,
+  .adminModerationMedia img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .adminReviewContent,
+  .adminModerationContent {
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  .adminReviewContent h3,
+  .adminModerationContent h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    line-height: 1.2;
+  }
+
+  .adminReviewContent p,
+  .adminModerationContent p {
+    margin: 0;
+  }
+
+  .adminRejectTextarea {
+    min-height: 78px;
+  }
+
+  .adminModerationCard {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.7rem;
+    align-items: start;
+  }
+
+  .adminModerationMedia {
+    aspect-ratio: 16 / 9;
+  }
+
+  .adminDataTable {
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
+  .adminDataTable thead tr {
+    background: #f8fafc;
+  }
+
+  .adminDataTable th {
+    padding: 12px 10px;
+    font-weight: 700;
+    color: #0f172a;
+    border-bottom: 1px solid #e5edf6;
+  }
+
+  .adminDataTable tbody tr {
+    background: #ffffff;
+  }
+
+  .adminDataTable tbody tr:nth-child(even) {
+    background: #fbfdff;
+  }
+
+  .adminDataTable td {
+    padding: 12px 10px;
+    border-top: 1px solid #e5edf6;
+    vertical-align: top;
+  }
+
+  .formGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 0.75rem;
+  }
+
+  .formField {
+    display: grid;
+    gap: 0.35rem;
+    align-content: start;
+  }
+
+  .formFieldWide {
+    grid-column: span 2;
+  }
+
+  .formLabel {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #334155;
+  }
+
+  .phoneWithCode {
+    display: grid;
+    grid-template-columns: 92px minmax(0, 1fr);
+    gap: 0.55rem;
+  }
+
+  .phoneWithCodePrefix {
+    text-align: center;
+    font-weight: 700;
+    color: #334155;
+    background: #f8fafc;
+  }
+
+  .phoneWithCodeValue {
+    min-width: 0;
+  }
+
+  .listingPricingBanner {
+    border: 1px solid #cfe0fb;
+    border-radius: 0.9rem;
+    background: linear-gradient(145deg, #f8fbff 0%, #edf4ff 100%);
+    padding: 0.75rem 0.95rem;
+    display: grid;
+    gap: 0.2rem;
+  }
+
+  .listingPricingTitle {
+    margin: 0;
+    color: #123564;
+    font-weight: 800;
+    font-size: 1.02rem;
+    line-height: 1.2;
+  }
+
+  .listingPricingText {
+    margin: 0;
+    color: #31507b;
+    font-size: 0.9rem;
+    line-height: 1.35;
+  }
+
+  .uploader {
+    display: grid;
+    gap: 0.55rem;
+  }
+
+  .uploaderHint {
+    margin: 0;
+    font-size: 0.82rem;
+    color: #64748b;
+  }
+
+  .uploaderError {
+    margin: 0;
+    color: #b91c1c;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .paymentBadge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    padding: 0.2rem 0.58rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.01em;
+  }
+
+  .paymentBadgeInfo {
+    background: #e8f1ff;
+    color: #1e40af;
+    border: 1px solid #bfd6ff;
+  }
+
+  .paymentBadgeWarn {
+    background: #fff7e6;
+    color: #b45309;
+    border: 1px solid #f8d699;
+  }
+
+  .paymentBadgeSuccess {
+    background: #e8f8ef;
+    color: #166534;
+    border: 1px solid #b4e6c5;
+  }
+
+  .paymentBadgeDanger {
+    background: #feeceb;
+    color: #b42318;
+    border: 1px solid #f7c2bf;
+  }
+
+  .paymentBadgeMuted {
+    background: #f3f4f6;
+    color: #4b5563;
+    border: 1px solid #d5d8df;
+  }
+
+  .uploaderList {
+    display: grid;
+    gap: 0.45rem;
+    border: 1px solid #dbe2ef;
+    border-radius: 0.65rem;
+    padding: 0.6rem 0.75rem;
+    background: #f8fafc;
+  }
+
+  .uploaderListHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.65rem;
+  }
+
+  .uploaderListHeader p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #334155;
+    font-weight: 600;
+  }
+
+  .uploaderItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6rem;
+    font-size: 0.84rem;
+    color: #475569;
+  }
+
+  .sellerNotice {
+    border: 1px solid #dbe2ef;
+    border-radius: 0.7rem;
+    padding: 0.65rem 0.85rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  .sellerNoticeInfo {
+    background: #eff6ff;
+    border-color: #bfdbfe;
+    color: #1d4ed8;
+  }
+
+  .sellerNoticeSuccess {
+    background: #ecfdf5;
+    border-color: #bbf7d0;
+    color: #166534;
+  }
+
+  .sellerNoticeError {
+    background: #fef2f2;
+    border-color: #fecaca;
+    color: #991b1b;
+  }
+
+  .sellerTrustPanel {
+    border: 1px solid #dbe2ef;
+    border-radius: 0.7rem;
+    padding: 0.75rem 0.9rem;
+    background: #f8fafc;
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  .sellerTrustPanel h3 {
+    margin: 0;
+    font-size: 0.96rem;
+    font-weight: 700;
+    color: #1e293b;
+  }
+
+  .sellerTrustPanel p {
+    margin: 0;
+    font-size: 0.87rem;
+    color: #475569;
+  }
+
+  .accountProfileHeader {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 0.25rem;
+  }
+
+  .accountAvatarImg,
+  .accountAvatarFallback {
+    width: 58px;
+    height: 58px;
+    border-radius: 999px;
+    border: 1px solid #c9dbfa;
+    flex-shrink: 0;
+  }
+
+  .accountAvatarImg {
+    object-fit: cover;
+    background: #eef4ff;
+  }
+
+  .accountAvatarFallback {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    color: #173b6d;
+    background: linear-gradient(145deg, #eaf2ff 0%, #f8fbff 100%);
+  }
+
+  .accountNameRow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    flex-wrap: wrap;
+  }
+
+  .accountProfessionalBadge {
+    min-height: 1.25rem;
+    padding: 0.15rem 0.56rem;
+  }
+
+  .accountCropStage {
+    width: min(320px, 100%);
+    aspect-ratio: 1 / 1;
+    border-radius: 0.85rem;
+    border: 1px solid #c9dbfa;
+    background: #eef4ff;
+    overflow: hidden;
+    position: relative;
+    justify-self: start;
+  }
+
+  .accountCropImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform-origin: center center;
+    transition: transform 80ms linear;
+  }
+
+  .authSplitLayout {
+    max-width: 1080px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
+    gap: 1rem;
+    align-items: start;
+  }
+
+  .authSplitLayout.authSplitWide {
+    grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.85fr);
+  }
+
+  .authFormCard {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .authPricingCard {
+    border: 1px solid #d3e3fb;
+    border-radius: 1rem;
+    background: linear-gradient(150deg, #ffffff 0%, #f4f8ff 100%);
+    padding: 1rem;
+    display: grid;
+    gap: 0.6rem;
+    box-shadow: 0 10px 24px rgba(30, 64, 175, 0.08);
+  }
+
+  .authPricingBadge {
+    justify-self: start;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #1d4ed8 0%, #2563eb 100%);
+    color: #ffffff;
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    padding: 0.28rem 0.65rem;
+  }
+
+  .authPricingTitle {
+    margin: 0;
+    color: #0f2d5d;
+    font-size: clamp(1.2rem, 2.4vw, 1.55rem);
+    line-height: 1.15;
+    font-weight: 800;
+  }
+
+  .authPricingLead {
+    margin: 0;
+    color: #29466f;
+    line-height: 1.45;
+  }
+
+  .authPricingList {
+    margin: 0;
+    padding-left: 1.05rem;
+    display: grid;
+    gap: 0.35rem;
+    color: #1f3a63;
+    line-height: 1.35;
+  }
+
+  .authPricingNote {
+    margin: 0;
+    border: 1px solid #c8dafe;
+    border-radius: 0.6rem;
+    background: #edf4ff;
+    color: #1d4ed8;
+    font-weight: 700;
+    padding: 0.5rem 0.65rem;
+  }
+
+  .authPricingPlans {
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .authPricingPlan {
+    border-radius: 0.75rem;
+    border: 1px solid #cfe0fb;
+    padding: 0.7rem 0.75rem;
+    display: grid;
+    gap: 0.3rem;
+  }
+
+  .authPricingPlanIndividual {
+    background: linear-gradient(145deg, #f8fbff 0%, #edf4ff 100%);
+  }
+
+  .authPricingPlanProfessional {
+    background: linear-gradient(145deg, #eef4ff 0%, #e5efff 100%);
+    border-color: #9ebef5;
+  }
+
+  .authPricingProPill {
+    justify-self: start;
+    padding: 0.18rem 0.55rem;
+    letter-spacing: 0.05em;
+  }
+
+  .authPricingPlanLabel {
+    margin: 0;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #194488;
+  }
+
+  .authPricingPlanPrice {
+    margin: 0;
+    font-size: 1.03rem;
+    font-weight: 800;
+    color: #0f2d5d;
+    line-height: 1.2;
+  }
+
+  .authPricingPlanText {
+    margin: 0;
+    color: #29466f;
+    line-height: 1.35;
+  }
+
+  .authPricingPlanList {
+    margin: 0.1rem 0 0;
+    padding-left: 1.05rem;
+    display: grid;
+    gap: 0.2rem;
+    color: #213e67;
+  }
+
+  input,
+  select,
+  textarea {
+    @apply rounded-md border border-input bg-white px-3 py-2 text-foreground outline-none transition;
+  }
+
+  input:focus,
+  select:focus,
+  textarea:focus {
+    @apply ring-2 ring-ring;
+  }
+
+  textarea {
+    min-height: 130px;
+    resize: vertical;
+  }
+
+  .primaryBtn {
+    @apply inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition hover:brightness-110;
+  }
+
+  .ghostBtn {
+    @apply inline-flex items-center justify-center rounded-md border border-border bg-white px-4 py-2 text-sm font-medium transition hover:bg-muted/70;
+  }
+
+  .inlineActions {
+    @apply flex flex-wrap gap-2;
+  }
+
+  .langSwitcher {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid #cddcf6;
+    border-radius: 999px;
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: inset 0 0 0 1px rgba(29, 78, 216, 0.04);
+  }
+
+  .langBtn {
+    border: 0;
+    background: transparent;
+    color: #2f4f79;
+    min-width: 56px;
+    padding: 0.33rem 0.65rem;
+    font-size: 0.76rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.2rem;
+    line-height: 1;
+    transition: background-color 120ms ease, color 120ms ease;
+  }
+
+  .langBtn:hover {
+    background: #eef4ff;
+  }
+
+  .langBtn.active {
+    background: #1d4ed8;
+    color: #ffffff;
+  }
+
+  .langBtn:focus-visible {
+    outline: 2px solid #1d4ed8;
+    outline-offset: -2px;
+  }
+
+  .langCode {
+    letter-spacing: 0.03em;
+  }
+
+  .langFlagImg {
+    width: 16px;
+    height: 11px;
+    object-fit: cover;
+    border-radius: 2px;
+    border: 1px solid rgba(17, 24, 39, 0.15);
+    display: block;
+  }
+
+  .navbarUserMenu {
+    position: relative;
+  }
+
+  .navbarUserCard {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid hsl(var(--border));
+    border-radius: 0.7rem;
+    background: #f8fbff;
+    padding: 0.28rem 0.35rem 0.28rem 0.55rem;
+    max-width: min(100%, 310px);
+    cursor: pointer;
+  }
+
+  .navbarUserMeta {
+    min-width: 0;
+    display: grid;
+    gap: 0.06rem;
+  }
+
+  .navbarUserName,
+  .navbarUserRole {
+    margin: 0;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .navbarUserName {
+    color: #163764;
+    font-weight: 700;
+    font-size: 0.86rem;
+  }
+
+  .navbarUserNameRow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    min-width: 0;
+  }
+
+  .navbarProfessionalBadge {
+    min-height: 1rem;
+    padding: 0.12rem 0.4rem;
+    font-size: 0.63rem;
+  }
+
+  .navbarUserRole {
+    color: #567096;
+    font-size: 0.76rem;
+  }
+
+  .navbarUserChevron {
+    color: #355683;
+    font-size: 0.78rem;
+    line-height: 1;
+    margin-left: 0.1rem;
+  }
+
+  .navbarUserDropdown {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 0.35rem);
+    min-width: 190px;
+    border: 1px solid #d6e4fa;
+    border-radius: 0.7rem;
+    background: #ffffff;
+    box-shadow: 0 10px 22px rgba(30, 64, 175, 0.12);
+    padding: 0.3rem;
+    display: grid;
+    gap: 0.2rem;
+    z-index: 60;
+  }
+
+  .navbarMenuItem {
+    border: 1px solid transparent;
+    border-radius: 0.5rem;
+    background: #ffffff;
+    color: #163764;
+    text-align: left;
+    padding: 0.43rem 0.55rem;
+    cursor: pointer;
+  }
+
+  .navbarMenuItem:hover {
+    background: #f3f8ff;
+    border-color: #d7e5fb;
+  }
+
+  .navbarMenuItem.isDisabled {
+    color: #6f88ad;
+    background: #f7faff;
+    cursor: default;
+  }
+
+  .muted {
+    @apply text-muted-foreground;
+  }
+
+  .heroSearchBanner {
+    position: relative;
+    overflow: hidden;
+    background:
+      linear-gradient(160deg, rgba(255, 255, 255, 0.96) 0%, rgba(241, 247, 255, 0.96) 100%),
+      url('https://images.unsplash.com/photo-1493238792000-8113da705763?q=80&w=1600&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+  }
+
+  .heroStrip {
+    display: inline-block;
+    padding: 0.45rem 0.9rem;
+    border-radius: 0.45rem;
+    background: linear-gradient(90deg, #facc15 0%, #fde047 100%);
+    color: #1f2937;
+    font-weight: 700;
+    margin-bottom: 0.9rem;
+  }
+
+  .heroSearchPanel {
+    margin-top: 1rem;
+    border: 1px solid hsl(var(--border));
+    border-radius: 0.9rem;
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow: 0 16px 34px rgba(30, 64, 175, 0.12);
+    padding: 1rem;
+    display: grid;
+    gap: 0.8rem;
+  }
+
+  .heroSearchGrid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .heroSearchActions {
+    display: flex;
+    justify-content: center;
+  }
+
+  .heroResultsBtn {
+    min-width: 220px;
+  }
+
+  .popularBrandsSection {
+    border: 1px solid hsl(var(--border));
+    border-radius: 0.95rem;
+    background: rgba(255, 255, 255, 0.85);
+    padding: 1rem 1.25rem;
+    display: grid;
+    gap: 0.8rem;
+  }
+
+  .popularBrandsSection h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+
+  .popularBrandsChips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+  }
+
+  .popularBrandChip {
+    min-width: 110px;
+    min-height: 76px;
+    border-radius: 0.9rem;
+    padding: 0.5rem 0.8rem;
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .popularBrandName {
+    font-size: 0.95rem;
+    line-height: 1.1;
+    text-align: center;
+    font-weight: 600;
+  }
+
+  .popularBrandLogo {
+    width: 30px;
+    height: 30px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    color: #1e3a8a;
+    background: #e0ecff;
+    border: 1px solid #b5ccf7;
+  }
+
+  .popularBrandLogoImg {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    border-radius: 999px;
+    background: #ffffff;
+    border: 1px solid #d8e4fb;
+    padding: 4px;
+  }
+
+  .homeDualCards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .homeInfoCard,
+  .homeSellCard {
+    border: 1px solid hsl(var(--border));
+    border-radius: 0.95rem;
+    background: rgba(255, 255, 255, 0.92);
+    padding: 1.2rem;
+    min-height: 220px;
+  }
+
+  .homeInfoCard h3,
+  .homeSellCard h3 {
+    margin: 0 0 0.85rem;
+    font-size: 1.2rem;
+    line-height: 1.15;
+  }
+
+  .homeSellCard p {
+    margin: 0 0 1rem;
+    color: hsl(var(--muted-foreground));
+    font-size: 1.05rem;
+    max-width: 40ch;
+  }
+
+  .homeSellCarousel {
+    height: 100%;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    gap: 0.55rem;
+  }
+
+  .homeSellSlide {
+    display: grid;
+    align-content: start;
+    gap: 0.2rem;
+  }
+
+  .homeSellCarouselNav {
+    display: grid;
+    grid-template-columns: 36px 1fr 36px;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 0.25rem;
+  }
+
+  .homeSellArrow {
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    border: 1px solid #c5d8fb;
+    background: #fff;
+    color: #1d63d1;
+    font-size: 1.45rem;
+    font-weight: 700;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: 140ms ease;
+  }
+
+  .homeSellArrow:hover {
+    border-color: #6e9de6;
+    background: #eef5ff;
+  }
+
+  .homeSellDots {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+  }
+
+  .homeSellDot {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    border: 0;
+    background: #c2d4f5;
+    padding: 0;
+  }
+
+  .homeSellDot.active {
+    width: 20px;
+    background: #1d63d1;
+  }
+
+  .homeSellPricingLink a {
+    color: #1d4ed8;
+    font-weight: 700;
+    font-size: 0.92rem;
+  }
+
+  .homeSellPricingLink a:hover {
+    color: #1e40af;
+    text-decoration: underline;
+  }
+
+  .tarifsHero {
+    border: 1px solid #d3e3fb;
+    background: linear-gradient(145deg, #ffffff 0%, #f4f8ff 100%);
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .tarifsBadge {
+    margin: 0;
+    width: fit-content;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #1d4ed8 0%, #2563eb 100%);
+    color: #fff;
+    font-size: 0.74rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0.26rem 0.64rem;
+  }
+
+  .tarifsTitle {
+    margin: 0;
+    color: #0f2d5d;
+    font-size: clamp(1.35rem, 2.3vw, 1.85rem);
+    line-height: 1.15;
+    font-weight: 800;
+  }
+
+  .tarifsLead {
+    margin: 0;
+    color: #2b476d;
+    line-height: 1.45;
+    max-width: 72ch;
+  }
+
+  .tarifsGrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.9rem;
+  }
+
+  .tarifsPlan {
+    display: grid;
+    gap: 0.48rem;
+  }
+
+  .tarifsPlanIndividual {
+    border: 1px solid #cfe0fb;
+    background: linear-gradient(145deg, #f8fbff 0%, #edf4ff 100%);
+  }
+
+  .tarifsPlanPro {
+    border: 1px solid #9ebef5;
+    background: linear-gradient(145deg, #eef4ff 0%, #e5efff 100%);
+  }
+
+  .tarifsPlanTop {
+    margin: 0;
+    color: #194488;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .tarifsPlanPrice {
+    margin: 0;
+    color: #0f2d5d;
+    font-size: 1.25rem;
+    font-weight: 800;
+    line-height: 1.2;
+  }
+
+  .tarifsPlanSub {
+    margin: 0;
+    color: #2a456c;
+    line-height: 1.4;
+  }
+
+  .tarifsList {
+    margin: 0;
+    padding-left: 1rem;
+    display: grid;
+    gap: 0.25rem;
+    color: #233f67;
+  }
+
+  .tarifsFooterCta p a {
+    color: #1d4ed8;
+    font-weight: 700;
+  }
+
+  .homeCategoryGrid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.8rem;
+  }
+
+  .homeCategoryItem {
+    display: grid;
+    justify-items: center;
+    gap: 0.55rem;
+    text-align: center;
+    border: 1px solid hsl(var(--border));
+    border-radius: 0.85rem;
+    background: #fff;
+    padding: 0.75rem 0.55rem;
+    transition: 140ms ease;
+    font-weight: 600;
+  }
+
+  .homeCategoryItem:hover {
+    border-color: #8fb3f2;
+    background: #f4f8ff;
+  }
+
+  .homeCategoryIconWrap {
+    width: 54px;
+    height: 54px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #f4f8ff;
+    border: 1px solid #c5d9fb;
+    padding: 8px;
+  }
+
+  .homeCategoryIconImg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
+  .carDetailHeader {
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  .carDetailTitle {
+    margin: 0;
+    font-size: clamp(1.5rem, 2.6vw, 2.15rem);
+    line-height: 1.12;
+    font-weight: 800;
+    color: #10264a;
+  }
+
+  .carDetailSubtitle {
+    margin: 0;
+    color: hsl(var(--muted-foreground));
+    line-height: 1.35;
+  }
+
+  .carDetailLayout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.45fr) minmax(300px, 1fr);
+    gap: 1rem;
+    align-items: start;
+  }
+
+  .carRightColumn {
+    display: grid;
+    gap: 0.9rem;
+    align-content: start;
+  }
+
+  .carGalleryCard {
+    padding: 0.95rem;
+    display: grid;
+    gap: 0.85rem;
+  }
+
+  .carMainImageWrap {
+    border-radius: 0.95rem;
+    border: 1px solid hsl(var(--border));
+    background: #edf2fd;
+    height: clamp(300px, 42vw, 460px);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .carMainImage {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    image-rendering: auto;
+    display: block;
+  }
+
+  .carMainImageLink {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.4rem;
+    cursor: zoom-in;
+  }
+
+  .carImageHint {
+    margin: -0.2rem 0 0;
+    font-size: 0.82rem;
+    color: #4d6690;
+  }
+
+  .carThumbsRow {
+    display: flex;
+    gap: 0.55rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 0.2rem;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .carThumbBtn {
+    flex: 0 0 110px;
+    width: 110px;
+    height: 72px;
+    border-radius: 0.7rem;
+    border: 2px solid #d8e4f8;
+    overflow: hidden;
+    background: #f3f7ff;
+    padding: 0;
+    cursor: pointer;
+    transition: border-color 120ms ease, transform 120ms ease;
+    scroll-snap-align: start;
+  }
+
+  .carThumbBtn:hover {
+    border-color: #84a8e8;
+  }
+
+  .carThumbBtn.active {
+    border-color: #2563eb;
+    transform: translateY(-1px);
+  }
+
+  .carThumbImg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    background: #edf2fd;
+  }
+
+  .carInfoCard {
+    display: grid;
+    gap: 0.95rem;
+    align-content: start;
+  }
+
+  .carShareLink {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    width: fit-content;
+    border: none;
+    background: transparent;
+    color: #1463d7;
+    font-size: 1.05rem;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  .carShareLink:hover {
+    color: #114fb0;
+  }
+
+  .carShareIcon {
+    width: 1.05rem;
+    height: 1.05rem;
+    flex-shrink: 0;
+  }
+
+  .carShareNotice {
+    margin: -0.55rem 0 0;
+    font-size: 0.86rem;
+    color: #3f6291;
+  }
+
+  .carDetailPrice {
+    margin: 0;
+    font-size: clamp(1.5rem, 2.4vw, 2rem);
+    line-height: 1.08;
+  }
+
+  .carInfoList {
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  .carInfoList p {
+    margin: 0;
+    line-height: 1.34;
+  }
+
+  .carDetailDesc {
+    margin: 0;
+    color: #1f3558;
+    line-height: 1.5;
+    white-space: pre-line;
+  }
+
+  .carSellerLine {
+    margin: 0;
+    color: #1d3358;
+    line-height: 1.35;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .carSellerNameRow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+
+  .carProfessionalBadge {
+    min-height: 1.1rem;
+    padding: 0.12rem 0.42rem;
+    font-size: 0.64rem;
+  }
+
+  .carSellerAvatarImg,
+  .carSellerAvatarFallback {
+    width: 38px;
+    height: 38px;
+    border-radius: 999px;
+    border: 1px solid #c9dbfa;
+    flex-shrink: 0;
+  }
+
+  .carSellerAvatarImg {
+    object-fit: cover;
+    background: #eef4ff;
+  }
+
+  .carSellerAvatarFallback {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: #173b6d;
+    background: linear-gradient(145deg, #eaf2ff 0%, #f8fbff 100%);
+  }
+
+  .carContactActions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.6rem;
+  }
+
+  .carContactActions a {
+    width: 100%;
+  }
+
+  .carWhatsappBtn {
+    background: #25d366;
+    border-color: #25d366;
+    color: #ffffff;
+    gap: 0.45rem;
+  }
+
+  .carWhatsappBtn:hover {
+    background: #1fb458;
+    border-color: #1fb458;
+  }
+
+  .carWhatsappIcon {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+  }
+
+  .carCallBtnDisabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+
+  .carRelatedCard {
+    display: grid;
+    gap: 0.7rem;
+  }
+
+  .carRelatedTitle {
+    margin: 0;
+    font-size: 1.05rem;
+    color: #193764;
+    font-weight: 800;
+  }
+
+  .carRelatedList {
+    display: grid;
+    gap: 0.55rem;
+  }
+
+  .carRelatedItem {
+    display: grid;
+    grid-template-columns: 92px minmax(0, 1fr);
+    gap: 0.6rem;
+    align-items: center;
+    border: 1px solid #d7e5fb;
+    border-radius: 0.75rem;
+    background: #f8fbff;
+    padding: 0.4rem;
+    transition: border-color 120ms ease, background-color 120ms ease;
+  }
+
+  .carRelatedItem:hover {
+    border-color: #9dbcf1;
+    background: #f2f8ff;
+  }
+
+  .carRelatedThumbWrap {
+    width: 92px;
+    height: 66px;
+    overflow: hidden;
+    border-radius: 0.55rem;
+    border: 1px solid #cddcf5;
+    background: #eaf1ff;
+  }
+
+  .carRelatedThumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .carRelatedMeta {
+    min-width: 0;
+    display: grid;
+    gap: 0.1rem;
+  }
+
+  .carRelatedName,
+  .carRelatedPrice,
+  .carRelatedSub {
+    margin: 0;
+  }
+
+  .carRelatedName {
+    font-weight: 700;
+    color: #18335e;
+    line-height: 1.2;
+  }
+
+  .carRelatedPrice {
+    font-weight: 800;
+    color: #1d4ed8;
+    line-height: 1.2;
+  }
+
+  .carRelatedSub {
+    color: #516587;
+    line-height: 1.2;
+    font-size: 0.9rem;
+  }
+
+  .carRelatedEmpty {
+    margin: 0;
+    line-height: 1.35;
+  }
+  
+  
+  .carsHeader {
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  .carsPageTitle {
+    margin: 0;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    line-height: 1.1;
+    font-weight: 800;
+    color: #10264a;
+    letter-spacing: 0.01em;
+  }
+
+  
+  .carsFilterActions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    align-items: center;
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  .carsProsFirstToggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 600;
+    color: #1f3558;
+    margin-left: auto;
+  }
+
+  .carsProsFirstToggle input[type='checkbox'] {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .carsCardsGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .sellerCardsGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  
+  .carsPagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 0.2rem;
+  }
+
+  .carsPaginationPages {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .carsPageBtn {
+    min-width: 40px;
+    height: 36px;
+    padding: 0 0.65rem;
+  }
+
+  .carsPageBtn.active {
+    pointer-events: none;
+  }
+
+  .carsPagination button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .recentSectionTitle {
+    margin: 0 0 0.85rem;
+    font-size: clamp(1.45rem, 2.5vw, 2rem);
+    line-height: 1.15;
+    letter-spacing: 0.01em;
+    font-weight: 800;
+    color: #0f2a57;
+  }
+  .recentCtaWrap {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+
+  .recentCtaBtn {
+    min-width: min(460px, 100%);
+    min-height: 50px;
+    padding: 0.58rem 1rem;
+    border-radius: 0.78rem;
+    border: 2px solid #2563eb;
+    background: #eef5ff;
+    color: #0b58cf;
+    font-size: 1.2rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65rem;
+    text-align: center;
+    line-height: 1.15;
+    transition: 140ms ease;
+  }
+
+  .recentCtaBtn:hover {
+    background: #e1eeff;
+    border-color: #1d4ed8;
+  }
+
+  .recentCtaPlus {
+    font-size: 1.2rem;
+    line-height: 1;
+    font-weight: 800;
+  }
+}
+
+@media (max-width: 980px) {
+  .carsCardsGrid,
+  .sellerCardsGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .authSplitLayout,
+  .authSplitLayout.authSplitWide {
+    grid-template-columns: 1fr;
+    max-width: 700px;
+  }
+
+  .sellerToolbar,
+  .sellerBulkBar {
+    grid-template-columns: 1fr;
+  }
+
+  .formFieldWide {
+    grid-column: span 1;
+  }
+
+  .sellerStatsGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .carDetailLayout {
+    grid-template-columns: 1fr;
+  }
+
+  .carMainImageWrap {
+    height: clamp(240px, 58vw, 380px);
+  }
+  .heroSearchGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .homeDualCards {
+    grid-template-columns: 1fr;
+  }
+
+  .homeCategoryGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .navbarUserCard {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .navbarUserDropdown {
+    width: 100%;
+  }
+}
+
+@media (max-width: 760px) {
+  .sellerStatsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .phoneWithCode {
+    grid-template-columns: 82px minmax(0, 1fr);
+    gap: 0.45rem;
+  }
+
+  .accountAvatarImg,
+  .accountAvatarFallback {
+    width: 52px;
+    height: 52px;
+  }
+
+  .listingPricingBanner {
+    padding: 0.7rem 0.8rem;
+  }
+
+  .listingPricingTitle {
+    font-size: 0.96rem;
+  }
+
+  .listingPricingText {
+    font-size: 0.86rem;
+  }
+
+  .sellerListingTop {
+    grid-template-columns: 1fr;
+  }
+
+  .sellerListingImageWrap {
+    width: 100%;
+    height: 180px;
+  }
+
+  .sellerCardActionPicker {
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+
+  .carContactActions {
+    grid-template-columns: 1fr;
+  }
+
+  .adminReviewCard,
+  .adminModerationCard {
+    grid-template-columns: 1fr;
+  }
+
+  .carRelatedItem {
+    grid-template-columns: 86px minmax(0, 1fr);
+  }
+
+  .carRelatedThumbWrap {
+    width: 86px;
+    height: 62px;
+  }
+
+  .carThumbsRow {
+    gap: 0.45rem;
+  }
+
+  .carThumbBtn {
+    flex-basis: 92px;
+    width: 92px;
+    height: 62px;
+  }
+
+  .carsCardsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .sellerCardsGrid {
+    grid-template-columns: 1fr;
+  }
+  .hero {
+    padding: 1.2rem;
+  }
+
+  .heroStrip {
+    display: block;
+    font-size: 0.95rem;
+  }
+
+  .heroSearchGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .popularBrandsSection {
+    padding: 0.85rem 0.95rem;
+  }
+
+  .popularBrandsSection h2 {
+    font-size: 1.2rem;
+  }
+
+  .popularBrandChip {
+    min-width: 92px;
+    min-height: 70px;
+    padding: 0.45rem 0.65rem;
+  }
+
+  .homeInfoCard,
+  .homeSellCard {
+    padding: 1rem;
+    min-height: auto;
+  }
+
+  .homeInfoCard h3,
+  .homeSellCard h3 {
+    font-size: 1.45rem;
+  }
+
+  .homeSellCarouselNav {
+    grid-template-columns: 34px 1fr 34px;
+  }
+
+  .tarifsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .homeSellSlide {
+    min-height: auto;
+  }
+
+  .homeCategoryGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.6rem;
+  }
+
+  .heroSearchActions .primaryBtn {
+    width: 100%;
+  }
+
+  .recentCtaBtn {
+    width: 100%;
+    font-size: 1.25rem;
+    min-height: 56px;
+  }
+
+  .recentCtaPlus {
+    font-size: 1.45rem;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.carhubFooter {
+  border-top: 1px solid #d9e5f8;
+  background: #f9fbff;
+  margin-top: 2rem;
+}
+
+.carhubFooterInner {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 1.3rem 1rem 1.4rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.carhubFooterLead {
+  margin: 0;
+  font-size: 1rem;
+  color: #19325e;
+}
+
+.carhubFooterLinksBlock {
+  border-top: 1px solid #e2eaf8;
+  border-bottom: 1px solid #e2eaf8;
+  padding: 0.9rem 0;
+}
+
+.carhubFooterLinksBlock h4 {
+  margin: 0 0 0.7rem;
+  font-size: 1rem;
+}
+
+.carhubFooterLinksGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.carhubFooterLinksGrid h5 {
+  margin: 0 0 0.35rem;
+  font-size: 0.9rem;
+  color: #1f3f73;
+}
+
+.carhubFooterLinksGrid ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.24rem;
+}
+
+.carhubFooterLinksGrid a {
+  font-size: 0.86rem;
+  color: #2458b3;
+}
+
+.carhubFooterLinksGrid a:hover {
+  text-decoration: underline;
+}
+
+.carhubFooterTextCard {
+  border: 1px solid #e3ebf9;
+  background: #ffffff;
+  border-radius: 0.55rem;
+  padding: 0.9rem;
+}
+
+.carhubFooterTextCard h4 {
+  margin: 0 0 0.55rem;
+  text-align: center;
+  color: #172d57;
+  font-size: 1.05rem;
+}
+
+.carhubFooterTextCard p {
+  margin: 0 0 0.55rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #2f4368;
+}
+
+.carhubFooterTextCard p:last-child {
+  margin-bottom: 0;
+}
+
+.carhubFooterBottom {
+  border-top: 1px solid #e2eaf8;
+  padding-top: 0.8rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+  color: #2a3f64;
+  font-size: 0.84rem;
+}
+
+.carhubFooterBottom strong {
+  display: block;
+  font-size: 0.92rem;
+}
+
+.carhubFooterBottom span {
+  display: block;
+  margin-top: 0.1rem;
+}
+
+.carhubFooterBottomLinks {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.carhubFooterBottomLinks a {
+  color: #2458b3;
+}
+
+.carhubFooterBottomLinks a:hover {
+  text-decoration: underline;
+}
+
+.cookieInfoBanner {
+  position: fixed;
+  left: 50%;
+  bottom: 14px;
+  transform: translateX(-50%);
+  width: min(920px, calc(100% - 1.2rem));
+  z-index: 90;
+  border: 1px solid #cfe0fb;
+  border-radius: 0.85rem;
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 12px 28px rgba(30, 64, 175, 0.16);
+  padding: 0.75rem 0.8rem;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.7rem;
+  align-items: center;
+}
+
+.cookieInfoBanner p {
+  margin: 0;
+  color: #1e3a66;
+  line-height: 1.35;
+  font-size: 0.92rem;
+}
+
+.cookieInfoBanner p a {
+  color: #1d4ed8;
+  font-weight: 700;
+}
+
+.cookieInfoBanner p a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 760px) {
+  .carThumbsRow {
+    gap: 0.45rem;
+  }
+
+  .carThumbBtn {
+    flex-basis: 92px;
+    width: 92px;
+    height: 62px;
+  }
+  .carhubFooterLinksGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .authPricingCard {
+    padding: 0.85rem;
+    gap: 0.5rem;
+  }
+
+  .authPricingTitle {
+    font-size: 1.12rem;
+  }
+
+  .authPricingLead,
+  .authPricingNote {
+    font-size: 0.92rem;
+  }
+
+  .authPricingPlanPrice {
+    font-size: 0.98rem;
+  }
+
+  .authPricingPlanText,
+  .authPricingPlanList {
+    font-size: 0.9rem;
+  }
+
+  .carhubFooterLead {
+    font-size: 0.94rem;
+  }
+
+  .cookieInfoBanner {
+    grid-template-columns: 1fr;
+    padding: 0.7rem;
+    bottom: 10px;
+  }
+
+  .cookieInfoBanner .primaryBtn {
+    width: 100%;
+  }
+}
+
+
+
+
+

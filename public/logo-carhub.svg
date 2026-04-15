@@ -1,0 +1,29 @@
+<svg width="560" height="140" viewBox="0 0 560 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="CarHub">
+  <rect width="560" height="140" fill="none"/>
+
+  <g transform="translate(26,22)">
+    <text
+      x="0"
+      y="84"
+      font-family="Arial Black, Arial, Helvetica, sans-serif"
+      font-size="88"
+      font-style="italic"
+      font-weight="900"
+      letter-spacing="0"
+      fill="#1e3a8a"
+    >CAR</text>
+
+    <polygon points="196,8 500,8 488,92 184,92" fill="#2563eb"/>
+
+    <text
+      x="224"
+      y="82"
+      font-family="Arial Black, Arial, Helvetica, sans-serif"
+      font-size="82"
+      font-style="italic"
+      font-weight="900"
+      letter-spacing="0"
+      fill="#ffffff"
+    >HUB</text>
+  </g>
+</svg>
