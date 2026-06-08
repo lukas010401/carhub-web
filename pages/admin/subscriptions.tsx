@@ -1,9 +1,11 @@
-﻿import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import { apiFetch } from '@/lib/api';
 import { getCurrentUser } from '@/lib/auth';
 import AdminSectionNav from '@/components/admin/AdminSectionNav';
 import type { ApiResponse, PagedResult } from '@/lib/types';
+import BetaBanner from '@/components/BetaBanner';
+import { isBetaMode } from '@/lib/beta';
 
 type AdminProSubscriptionItem = {
   id: string;
@@ -54,6 +56,7 @@ function statusUi(rawStatus: string, active: boolean): { label: string; bg: stri
 
 export default function AdminSubscriptionsPage() {
   const router = useRouter();
+  const betaMode = isBetaMode();
   const [items, setItems] = useState<AdminProSubscriptionItem[]>([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
@@ -103,17 +106,22 @@ export default function AdminSubscriptionsPage() {
       router.replace('/');
       return;
     }
+    if (betaMode) {
+      setLoading(false);
+      return;
+    }
     load(1, '');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
   useEffect(() => {
+    if (betaMode) return;
     const t = window.setTimeout(() => {
       load(1, keyword);
     }, 300);
     return () => window.clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [keyword]);
+  }, [keyword, betaMode]);
 
   const runAction = async (userId: string, action: SubscriptionAction) => {
     setBusyUserId(userId);
@@ -146,6 +154,18 @@ export default function AdminSubscriptionsPage() {
   return (
     <div className="grid gap-4">
       <AdminSectionNav active="subscriptions" />
+      {betaMode ? (
+        <>
+          <BetaBanner showPricingLink={false} />
+          <section className="card cardBody betaInfoCard">
+            <h1 className="text-2xl font-bold" style={{ margin: 0 }}>Abonnements professionnels</h1>
+            <p className="betaInfoText">
+              Le module abonnement est masquÉ pendant la bêta. Les comptes professionnels restent visibles, sans facturation active.
+            </p>
+          </section>
+        </>
+      ) : (
+        <>
       <div className="inlineActions items-center justify-between">
         <h1 className="text-2xl font-bold">Abonnements professionnels</h1>
         <span className="ghostBtn" style={{ pointerEvents: 'none' }}>Comptes: {total}</span>
@@ -259,6 +279,8 @@ export default function AdminSubscriptionsPage() {
         </div>
         <button className="ghostBtn carsPageBtn" type="button" onClick={() => load(page + 1, keyword)} disabled={page >= totalPages || loading}>Suivant</button>
       </div>
+        </>
+      )}
     </div>
   );
 }

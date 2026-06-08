@@ -779,6 +779,89 @@
     border: 1px solid #d5d8df;
   }
 
+  .betaBanner {
+    display: grid;
+    gap: 0.9rem;
+    margin-bottom: 1rem;
+    padding: 1rem 1.1rem;
+    border: 1px solid #bfdbfe;
+    border-radius: 1rem;
+    background:
+      radial-gradient(circle at top left, rgba(59, 130, 246, 0.14), transparent 42%),
+      linear-gradient(135deg, #eff6ff 0%, #f8fbff 100%);
+    box-shadow: 0 16px 40px rgba(29, 78, 216, 0.08);
+  }
+
+  .betaBannerCompact {
+    gap: 0.55rem;
+    padding: 0.9rem 1rem;
+  }
+
+  .betaBannerBody {
+    display: grid;
+    gap: 0.28rem;
+  }
+
+  .betaBannerEyebrow {
+    margin: 0;
+    color: #1d4ed8;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .betaBannerTitle {
+    margin: 0;
+    color: #0f172a;
+    font-size: 1.1rem;
+    font-weight: 900;
+    line-height: 1.15;
+  }
+
+  .betaBannerText {
+    margin: 0;
+    color: #334155;
+    line-height: 1.55;
+  }
+
+  .betaBannerLink {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    min-height: 42px;
+    padding: 0.7rem 1rem;
+    border-radius: 999px;
+    border: 1px solid #93c5fd;
+    background: #fff;
+    color: #1d4ed8;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .betaBannerLink:hover {
+    background: #eff6ff;
+  }
+
+  .betaInfoCard {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .betaInfoTitle {
+    margin: 0;
+    color: #0f172a;
+    font-size: 1.05rem;
+    font-weight: 800;
+  }
+
+  .betaInfoText {
+    margin: 0;
+    color: #475569;
+    line-height: 1.55;
+  }
+
   .uploaderList {
     display: grid;
     gap: 0.45rem;

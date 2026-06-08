@@ -1,4 +1,4 @@
-﻿import { FormEvent, useEffect, useMemo, useState } from 'react';
+import { FormEvent, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import ImageUploader from '@/components/ImageUploader';
 import BackLink from '@/components/ui/back-link';
@@ -8,6 +8,7 @@ import { resolveMediaUrl } from '@/lib/media';
 import { ListingPayload, MetadataItem } from '@/lib/types';
 import { fuelTypeLabel, transmissionTypeLabel } from '@/lib/vehicle-labels';
 import { useI18n } from '@/lib/i18n';
+import { isBetaMode } from '@/lib/beta';
 
 const initial: ListingPayload = {
   brandId: '', modelId: '', year: new Date().getFullYear(), price: 0, mileage: 0,
@@ -56,6 +57,7 @@ export default function NewListingPage() {
   const router = useRouter();
   const currentUser = getCurrentUser();
   const isProfessional = currentUser?.accountType === 'Professional';
+  const betaMode = isBetaMode();
   const [form, setForm] = useState<ListingPayload>(initial);
   const [brands, setBrands] = useState<MetadataItem[]>([]);
   const [models, setModels] = useState<MetadataItem[]>([]);
@@ -136,6 +138,17 @@ export default function NewListingPage() {
 
       const created = await apiFetch<any>('/api/seller/listings', { method: 'POST', body: JSON.stringify(payload) }, true);
       if (files.length > 0) await uploadFiles(`/api/seller/listings/${created.id}/images`, files);
+      if (betaMode) {
+        try {
+          await apiFetch(`/api/seller/listings/${created.id}/submit`, { method: 'POST' }, true);
+          router.push('/dashboard?notice=beta-published');
+          return;
+        } catch {
+          router.push('/dashboard?notice=beta-created');
+          return;
+        }
+      }
+
       if (isProfessional) {
         router.push(`/dashboard/listings/${created.id}?notice=created`);
       } else {
@@ -168,12 +181,19 @@ export default function NewListingPage() {
       <h1 className="text-2xl font-bold">{tr('Nouvelle annonce', 'Filazana vaovao')}</h1>
       <section className="listingPricingBanner" aria-label="Tarification publication">
         <p className="listingPricingTitle">
-          {isProfessional ? 'Compte professionnel (abonnement mensuel)' : '20 000 MGA par annonce'}
+          {betaMode
+            ? tr('Publication gratuite pendant la bêta', 'Famoahana maimaim-poana mandritra ny bêta')
+            : isProfessional ? 'Compte professionnel (abonnement mensuel)' : '20 000 MGA par annonce'}
         </p>
         <p className="listingPricingText">
-          {isProfessional
-            ? 'Votre compte est professionnel: la mise en ligne necessite un abonnement mensuel actif.'
-            : 'Paiement uniquement quand vous mettez une annonce en ligne. Aucun abonnement mensuel.'}
+          {betaMode
+            ? tr(
+              'Les paiements sont désactivés pour la période de lancement. Votre annonce peut être publiée sans frais.',
+              'Tsy mandeha ny fandoavana mandritra ny fanombohana. Azo avoaka tsy misy sarany ny filazanao.'
+            )
+            : isProfessional
+              ? 'Votre compte est professionnel : la mise en ligne n?cessite un abonnement mensuel actif.'
+              : 'Paiement uniquement quand vous mettez une annonce en ligne. Aucun abonnement mensuel.'}
         </p>
       </section>
       <form className="card cardBody grid" onSubmit={submit}>

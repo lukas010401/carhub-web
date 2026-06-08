@@ -1,9 +1,10 @@
-﻿import { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
+import { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import ListingCard from '@/components/ListingCard';
 import { apiFetch } from '@/lib/api';
 import { getCurrentUser } from '@/lib/auth';
+import { isBetaMode } from '@/lib/beta';
 import { MetadataItem, PopularBrand, PublicListing } from '@/lib/types';
 import { useI18n } from '@/lib/i18n';
 
@@ -31,6 +32,7 @@ function getCategoryImageSrc(category: MetadataItem | undefined, fallbackName: s
 
 export default function HomePage() {
   const { tr } = useI18n();
+  const betaMode = isBetaMode();
   const router = useRouter();
   const [items, setItems] = useState<PublicListing[]>([]);
   const [visibleRecentCount, setVisibleRecentCount] = useState(8);
@@ -159,8 +161,12 @@ export default function HomePage() {
     {
       title: tr('Annonce particulier', 'Filazana ho an’ny olon-tsotra'),
       description: tr(
-        'Pour les particuliers, vous payez 20 000 Ar uniquement quand vous mettez une annonce en ligne.',
-        'Ho an’ny olon-tsotra, mandoa 20 000 Ar ianao rehefa mampakatra filazana amin’ny aterineto.'
+        betaMode
+          ? 'Pendant la bêta, les particuliers publient gratuitement leurs annonces.'
+          : 'Pour les particuliers, vous payez 20 000 Ar uniquement quand vous mettez une annonce en ligne.',
+        betaMode
+          ? 'Mandritra ny bêta, maimaim-poana ny famoahan’ny olon-tsotra ny filazany.'
+          : 'Ho an’ny olon-tsotra, mandoa 20 000 Ar ianao rehefa mampakatra filazana amin’ny aterineto.'
       ),
       href: authSellHref,
       cta: tr('Publier en particulier', 'Hamoaka ho olon-tsotra')
@@ -168,8 +174,12 @@ export default function HomePage() {
     {
       title: tr('Offre vendeur professionnel', 'Tolotra mpivarotra matihanina'),
       description: tr(
-        'Abonnement pro à 150 000 Ar/mois: annonces illimitées pendant la période active, badge PRO et meilleure visibilité dans les recherches.',
-        'Famandrihana pro 150 000 Ar/volana: filazana tsy voafetra mandritra ny fotoana mavitrika, badge PRO ary hita kokoa amin’ny fikarohana.'
+        betaMode
+          ? 'Les vendeurs professionnels sont identifiÉs pendant la bêta, sans facturation active pour le lancement.'
+          : 'Abonnement pro à 150 000 Ar/mois: annonces illimitées pendant la période active, badge PRO et meilleure visibilité dans les recherches.',
+        betaMode
+          ? 'Fantatra mazava ny mpivarotra matihanina mandritra ny bêta, nefa tsy mbola misy fandoavana mavitrika.'
+          : 'Famandrihana pro 150 000 Ar/volana: filazana tsy voafetra mandritra ny fotoana mavitrika, badge PRO ary hita kokoa amin’ny fikarohana.'
       ),
       href: authSellHref,
       cta: tr('Découvrir l’offre pro', 'Hijery ny tolotra pro')

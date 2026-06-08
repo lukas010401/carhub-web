@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { isBetaMode } from '@/lib/beta';
 
 type AdminSection = 'overview' | 'subscriptions' | 'payments';
 
@@ -7,10 +8,13 @@ type Props = {
 };
 
 export default function AdminSectionNav({ active }: Props) {
+  const betaMode = isBetaMode();
   const items: Array<{ key: AdminSection; href: string; label: string }> = [
     { key: 'overview', href: '/admin', label: 'Vue admin' },
-    { key: 'subscriptions', href: '/admin/subscriptions', label: 'Abonnements pro' },
-    { key: 'payments', href: '/admin/payments', label: 'Paiements' }
+    ...(betaMode ? [] : [
+      { key: 'subscriptions' as const, href: '/admin/subscriptions', label: 'Abonnements pro' },
+      { key: 'payments' as const, href: '/admin/payments', label: 'Paiements' }
+    ])
   ];
 
   return (

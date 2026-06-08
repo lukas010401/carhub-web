@@ -5,6 +5,8 @@ import { useRouter } from 'next/router';
 import { JwtUser } from '@/lib/types';
 import { roleLabel } from '@/lib/ui-labels';
 import { useI18n } from '@/lib/i18n';
+import BetaBanner from '@/components/BetaBanner';
+import { isBetaMode } from '@/lib/beta';
 
 interface Props {
   children: ReactNode;
@@ -94,6 +96,7 @@ export default function Layout({ children }: Props) {
   };
 
   const showSellButton = !hydrated || !user;
+  const betaMode = isBetaMode();
   const userLabel = (user?.fullName || '').trim() || (user?.email ? user.email.split('@')[0] : '');
   const userFallbackLabel = tr('Utilisateur', 'Mpampiasa');
   const isProfessionalSeller = user?.role === 'Seller' && String(user?.accountType || '').toLowerCase() === 'professional';
@@ -170,7 +173,7 @@ export default function Layout({ children }: Props) {
                         {tr('Mon compte', 'Kaontiko')}
                       </a>
                     </Link>
-                    {user.role === 'Seller' && (
+                    {user.role === 'Seller' && !betaMode && (
                       <Link href="/dashboard/subscription">
                         <a className="navbarMenuItem" role="menuitem" onClick={() => setProfileOpen(false)}>
                           {tr('Mon abonnement', 'Ny famandrihako')}
@@ -188,7 +191,10 @@ export default function Layout({ children }: Props) {
         </div>
       </header>
 
-      <main className="mx-auto w-full max-w-6xl px-4 py-5">{children}</main>
+      <main className="mx-auto w-full max-w-6xl px-4 py-5">
+        {betaMode && <BetaBanner compact />}
+        {children}
+      </main>
 
       <footer className="carhubFooter">
         <div className="carhubFooterInner">

@@ -1,4 +1,4 @@
-﻿import Link from 'next/link';
+import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import { apiFetch } from '@/lib/api';
@@ -8,6 +8,7 @@ import { ListingStatus, SellerListing } from '@/lib/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { listingStatusLabel } from '@/lib/ui-labels';
 import { useI18n } from '@/lib/i18n';
+import { isBetaMode } from '@/lib/beta';
 
 type SellerStats = {
   total: number;
@@ -124,6 +125,7 @@ function getCoverFromListingDetails(data: any): string {
 
 export default function DashboardPage() {
   const { tr, lang } = useI18n();
+  const betaMode = isBetaMode();
   const router = useRouter();
   const [items, setItems] = useState<SellerListing[]>([]);
   const [totalCount, setTotalCount] = useState(0);
@@ -211,6 +213,10 @@ export default function DashboardPage() {
     const raw = router.query.notice;
     if (raw === 'created') {
       setNotice({ tone: 'success', text: 'Annonce créée avec succès.' });
+    } else if (raw === 'beta-created') {
+      setNotice({ tone: 'success', text: 'Annonce crÉÉe. La publication est gratuite pendant la bêta.' });
+    } else if (raw === 'beta-published') {
+      setNotice({ tone: 'success', text: 'Annonce publiÉe gratuitement dans le cadre de la bêta.' });
     } else if (raw === 'updated') {
       setNotice({ tone: 'success', text: 'Annonce mise à jour avec succès.' });
     }
@@ -340,21 +346,27 @@ export default function DashboardPage() {
         <h1 className="text-2xl font-bold">{tr('Espace vendeur', 'Faritra mpivarotra')}</h1>
         <Link href="/dashboard/listings/new"><a className="primaryBtn">{tr('Nouvelle annonce', 'Filazana vaovao')}</a></Link>
       </div>
-
       <section className="card cardBody" style={{ display: 'grid', gap: '0.4rem' }}>
         <p className="sellerStatLabel" style={{ margin: 0 }}>Type de compte</p>
         <p style={{ margin: 0, fontWeight: 800, color: '#123564' }}>
           {subscriptionInfo?.accountType === 'Professional' ? 'Professionnel' : 'Particulier'}
-          {subscriptionInfo?.accountType === 'Professional' && (
+          {subscriptionInfo?.accountType === 'Professional' && !betaMode && (
             <span style={{ marginLeft: 8, color: subscriptionInfo.hasActiveSubscription ? '#166534' : '#b45309', fontWeight: 700 }}>
               {subscriptionInfo.hasActiveSubscription ? 'Abonnement actif' : 'Abonnement inactif'}
             </span>
           )}
         </p>
-        {subscriptionInfo?.message && <p className="muted" style={{ margin: 0 }}>{subscriptionInfo.message}</p>}
-        <div className="inlineActions">
+        <p className="muted" style={{ margin: 0 }}>
+          {betaMode
+            ? tr(
+              'La publication est gratuite pendant la bêta. Les conditions commerciales dÉfinitives seront communiquÉes plus tard.',
+              'Maimaim-poana ny famoahana mandritra ny bêta. Hambara aoriana ny fepetra ara-barotra farany.'
+            )
+            : subscriptionInfo?.message || ''}
+        </p>
+        {!betaMode && <div className="inlineActions">
           <Link href="/dashboard/subscription"><a className="ghostBtn">Mon abonnement</a></Link>
-        </div>
+        </div>}
       </section>
 
       <section className="sellerStatsGrid">
@@ -432,11 +444,11 @@ export default function DashboardPage() {
             const latestPayment = (x as any)?.latestManualPayment;
             const latestPaymentStatus = String(latestPayment?.status || '').trim();
             const isIndividual = subscriptionInfo?.accountType !== 'Professional';
-            const canSubmit = x.status === 'Draft' && (!isIndividual || latestPaymentStatus === 'Approved');
+            const canSubmit = x.status === 'Draft' && (betaMode || !isIndividual || latestPaymentStatus === 'Approved');
             const canMarkSold = x.status === 'Published' || x.status === 'Approved';
             const canRelist = x.status === 'Archived' || x.status === 'Sold';
             const isBusy = busyId === x.id;
-            const canPayPublication = x.status === 'Draft' && isIndividual && latestPaymentStatus !== 'UnderReview' && latestPaymentStatus !== 'Approved';
+            const canPayPublication = !betaMode && x.status === 'Draft' && isIndividual && latestPaymentStatus !== 'UnderReview' && latestPaymentStatus !== 'Approved';
             const coverSrc = getSellerCardCoverSrc(x) || fallbackCovers[x.id] || '';
             return (
               <Card
@@ -487,7 +499,7 @@ export default function DashboardPage() {
                         Payer
                       </button>
                     )}
-                    {x.status === 'Draft' && latestPaymentStatus && (
+                    {!betaMode && x.status === 'Draft' && latestPaymentStatus && (
                       <span className={`paymentBadge ${paymentStatusClass(latestPaymentStatus)}`} style={{ fontSize: '0.78rem' }}>
                         Paiement: {paymentStatusLabel(latestPaymentStatus)}
                       </span>
@@ -507,7 +519,7 @@ export default function DashboardPage() {
                         onClick={() => runCardAction(x.id, 'submit')}
                         disabled={isBusy}
                       >
-                        {tr('Mettre en ligne', 'Alefa hohamarinina')}
+                        {betaMode ? tr('Publier', 'Avoahy') : tr('Mettre en ligne', 'Alefa hohamarinina')}
                       </button>
                     )}
                     {x.status === 'Sold' && (

@@ -1,8 +1,10 @@
-﻿import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import { apiFetch } from '@/lib/api';
 import { getCurrentUser } from '@/lib/auth';
 import AdminSectionNav from '@/components/admin/AdminSectionNav';
+import BetaBanner from '@/components/BetaBanner';
+import { isBetaMode } from '@/lib/beta';
 
 type AdminPaymentItem = {
   id: string;
@@ -62,6 +64,7 @@ function typeUi(type: string): { label: string; bg: string; color: string } {
 
 export default function AdminPaymentsPage() {
   const router = useRouter();
+  const betaMode = isBetaMode();
   const [items, setItems] = useState<AdminPaymentItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [busyId, setBusyId] = useState<string | null>(null);
@@ -101,6 +104,10 @@ export default function AdminPaymentsPage() {
       router.replace('/');
       return;
     }
+    if (betaMode) {
+      setLoading(false);
+      return;
+    }
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router, statusFilter]);
@@ -133,34 +140,47 @@ export default function AdminPaymentsPage() {
     <div className="grid gap-4">
       <AdminSectionNav active="payments" />
 
-      <div className="inlineActions items-center justify-between">
-        <h1 className="text-2xl font-bold">Paiements manuels</h1>
-        <span className="ghostBtn" style={{ pointerEvents: 'none' }}>À valider: {pendingCount}</span>
-      </div>
+      {betaMode ? (
+        <>
+          <BetaBanner showPricingLink={false} />
+          <section className="card cardBody betaInfoCard">
+            <h1 className="text-2xl font-bold" style={{ margin: 0 }}>Paiements manuels</h1>
+            <p className="betaInfoText">
+              Le module paiements est masqué pendant la bêta. Les annonces sont publiées gratuitement pendant la période de lancement.
+            </p>
+          </section>
+        </>
+      ) : (
+        <>
 
-      <div className="card cardBody sellerToolbar">
-        <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
-          <option value="UnderReview">À valider</option>
-          <option value="Initiated">Initiés</option>
-          <option value="Approved">Approuvés</option>
-          <option value="Rejected">Rejetés</option>
-          <option value="">Tous</option>
-        </select>
-        <input
-          type="text"
-          placeholder="Référence, vendeur, transaction..."
-          value={keyword}
-          onChange={(e) => setKeyword(e.target.value)}
-        />
-        <button type="button" className="ghostBtn" onClick={load}>Rafraîchir</button>
-      </div>
+          <div className="inlineActions items-center justify-between">
+            <h1 className="text-2xl font-bold">Paiements manuels</h1>
+            <span className="ghostBtn" style={{ pointerEvents: 'none' }}>À valider: {pendingCount}</span>
+          </div>
 
-      {error && <p className="sellerNotice sellerNoticeError">{error}</p>}
-      {success && <p className="sellerNotice sellerNoticeSuccess">{success}</p>}
-      {loading && <p className="muted">Chargement...</p>}
+          <div className="card cardBody sellerToolbar">
+            <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
+              <option value="UnderReview">À valider</option>
+              <option value="Initiated">Initiés</option>
+              <option value="Approved">Approuvés</option>
+              <option value="Rejected">Rejetés</option>
+              <option value="">Tous</option>
+            </select>
+            <input
+              type="text"
+              placeholder="Référence, vendeur, transaction..."
+              value={keyword}
+              onChange={(e) => setKeyword(e.target.value)}
+            />
+            <button type="button" className="ghostBtn" onClick={load}>Rafraîchir</button>
+          </div>
 
-      <div className="card cardBody" style={{ overflowX: 'auto' }}>
-        <table style={{ width: '100%', minWidth: 1220, borderCollapse: 'separate', borderSpacing: 0 }}>
+          {error && <p className="sellerNotice sellerNoticeError">{error}</p>}
+          {success && <p className="sellerNotice sellerNoticeSuccess">{success}</p>}
+          {loading && <p className="muted">Chargement...</p>}
+
+          <div className="card cardBody" style={{ overflowX: 'auto' }}>
+            <table style={{ width: '100%', minWidth: 1220, borderCollapse: 'separate', borderSpacing: 0 }}>
           <thead>
             <tr style={{ background: '#f8fafc' }}>
               <th align="left" style={{ padding: '12px 10px' }}>Réf CarHub</th>
@@ -229,8 +249,10 @@ export default function AdminPaymentsPage() {
               </tr>
             )}
           </tbody>
-        </table>
-      </div>
+            </table>
+          </div>
+        </>
+      )}
     </div>
   );
 }

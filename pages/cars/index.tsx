@@ -33,6 +33,7 @@ export default function CarsPage() {
 
   const [modelId, setModelId] = useState('');
   const [brandId, setBrandId] = useState('');
+  const [brandSlug, setBrandSlug] = useState('');
   const [categoryId, setCategoryId] = useState('');
   const [categorySlug, setCategorySlug] = useState('');
   const [minPrice, setMinPrice] = useState('');
@@ -70,6 +71,7 @@ export default function CarsPage() {
 
     const q = router.query;
     setBrandId(qv((q.BrandId as any) ?? (q.brandId as any)));
+    setBrandSlug(qv((q.Brand as any) ?? (q.brand as any)));
     setModelId(qv((q.ModelId as any) ?? (q.modelId as any)));
     setCategoryId(qv((q.CategoryId as any) ?? (q.categoryId as any)));
     setCategorySlug(qv((q.Category as any) ?? (q.category as any)));
@@ -88,6 +90,13 @@ export default function CarsPage() {
     setCurrentPage(Number.isFinite(p) && p > 0 ? p : 1);
     setFiltersReady(true);
   }, [router.isReady, router.query]);
+
+  useEffect(() => {
+    if (!brandId && brandSlug && brands.length > 0) {
+      const matched = brands.find((b) => b.slug === brandSlug || slugify(b.name) === brandSlug);
+      if (matched) setBrandId(matched.id);
+    }
+  }, [brandId, brandSlug, brands]);
 
   useEffect(() => {
     if (!categoryId && categorySlug && categories.length > 0) {
@@ -211,6 +220,7 @@ export default function CarsPage() {
   const resetFilters = () => {
     setModelId('');
     setBrandId('');
+    setBrandSlug('');
     setCategoryId('');
     setCategorySlug('');
     setMinPrice('');
@@ -325,4 +335,3 @@ export default function CarsPage() {
     </div>
   );
 }
-

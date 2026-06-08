@@ -1,8 +1,10 @@
-﻿import Link from 'next/link';
+import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import { apiFetch } from '@/lib/api';
 import { getCurrentUser } from '@/lib/auth';
+import BetaBanner from '@/components/BetaBanner';
+import { isBetaMode } from '@/lib/beta';
 
 function formatDate(value?: string): string {
   if (!value) return '-';
@@ -13,6 +15,7 @@ function formatDate(value?: string): string {
 
 export default function SellerSubscriptionPage() {
   const router = useRouter();
+  const betaMode = isBetaMode();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [data, setData] = useState<any>(null);
@@ -29,11 +32,20 @@ export default function SellerSubscriptionPage() {
       return;
     }
 
+    if (betaMode) {
+      setData({
+        accountType: user.accountType || 'Individual',
+        message: 'Le module abonnement est dÉsactivÉ pendant la bêta.'
+      });
+      setLoading(false);
+      return;
+    }
+
     apiFetch<any>('/api/seller/subscription', {}, true)
       .then(setData)
       .catch((e: any) => setError(e?.message || 'Impossible de charger votre abonnement.'))
       .finally(() => setLoading(false));
-  }, [router]);
+  }, [router, betaMode]);
 
   if (loading) return <p className="muted">Chargement...</p>;
 
@@ -55,6 +67,25 @@ export default function SellerSubscriptionPage() {
       setRenewing(false);
     }
   };
+
+  if (betaMode) {
+    return (
+      <div className="grid gap-4" style={{ maxWidth: 860 }}>
+        <div className="inlineActions items-center justify-between">
+          <h1 className="text-2xl font-bold">Mon abonnement</h1>
+          <Link href="/dashboard"><a className="ghostBtn">Retour espace vendeur</a></Link>
+        </div>
+        <BetaBanner showPricingLink />
+        <section className="card cardBody betaInfoCard">
+          <h2 className="betaInfoTitle">Module abonnement en pause pendant la bêta</h2>
+          <p className="betaInfoText">
+            Les paiements et renouvellements sont temporairement dÉsactivÉs dans cette interface.
+            Les vendeurs professionnels restent identifiÉs sur la plateforme, mais la facturation n’est pas active pendant la pÉriode de lancement.
+          </p>
+        </section>
+      </div>
+    );
+  }
 
   return (
     <div className="grid gap-4" style={{ maxWidth: 860 }}>

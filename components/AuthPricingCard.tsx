@@ -1,7 +1,50 @@
-﻿import { useI18n } from '@/lib/i18n';
+import { useI18n } from '@/lib/i18n';
+import { isBetaMode } from '@/lib/beta';
 
 export default function AuthPricingCard() {
   const { tr } = useI18n();
+  const betaMode = isBetaMode();
+
+  if (betaMode) {
+    return (
+      <section className="authPricingCard" aria-label="Lancement bêta CarHub">
+        <div className="authPricingBadge">{tr('Lancement bêta', 'Fanombohana bêta')}</div>
+        <h2 className="authPricingTitle">{tr('Publiez gratuitement pendant notre phase bêta', 'Mamoaha filazana maimaim-poana mandritra ny dingana bêta')}</h2>
+        <p className="authPricingLead">
+          {tr(
+            'CarHub ouvre sa version bêta. Les annonces sont gratuites pendant la période de lancement pour les particuliers comme pour les professionnels.',
+            'Misokatra amin’ny kinova bêta i CarHub. Maimaim-poana ny filazana mandritra ny vanim-potoana fanombohana ho an’ny olon-tsotra sy ny matihanina.'
+          )}
+        </p>
+
+        <div className="authPricingPlans">
+          <article className="authPricingPlan authPricingPlanIndividual">
+            <p className="authPricingPlanLabel">{tr('Particulier', 'Olon-tsotra')}</p>
+            <p className="authPricingPlanPrice">{tr('Gratuit pendant la bêta', 'Maimaim-poana mandritra ny bêta')}</p>
+            <p className="authPricingPlanText">{tr('Créez votre compte et publiez sans frais de lancement.', 'Mamorona kaonty ary avoahy tsy misy sarany fanombohana ny filazanao.')}</p>
+          </article>
+
+          <article className="authPricingPlan authPricingPlanProfessional">
+            <span className="authPricingProPill">PRO</span>
+            <p className="authPricingPlanLabel">{tr('Professionnel', 'Matihanina')}</p>
+            <p className="authPricingPlanPrice">{tr('Activation bêta gratuite', 'Activation bêta maimaim-poana')}</p>
+            <ul className="authPricingPlanList">
+              <li>{tr('Le badge PRO reste visible sur vos annonces.', 'Mbola hita amin’ny filazanao ny badge PRO.')}</li>
+              <li>{tr('Les comptes professionnels restent identifiés pendant la bêta.', 'Mbola fantatra tsara ny kaonty matihanina mandritra ny bêta.')}</li>
+              <li>{tr('Les conditions commerciales définitives seront communiquées plus tard.', 'Hambara aoriana ny fepetra ara-barotra farany.')}</li>
+            </ul>
+          </article>
+        </div>
+
+        <p className="authPricingNote">
+          {tr(
+            'Choisissez simplement votre type de compte à l’inscription. Les paiements sont désactivés pendant cette phase bêta.',
+            'Fidio fotsiny ny karazana kaonty amin’ny fisoratana anarana. Tsy mandeha ny fandoavana mandritra izao dingana bêta izao.'
+          )}
+        </p>
+      </section>
+    );
+  }
 
   return (
     <section className="authPricingCard" aria-label="Tarification CarHub">
@@ -22,14 +65,13 @@ export default function AuthPricingCard() {
         </article>
 
         <article className="authPricingPlan authPricingPlanProfessional">
-          <span className="authPricingProPill">⭐ PRO</span>
+          <span className="authPricingProPill">PRO</span>
           <p className="authPricingPlanLabel">{tr('Professionnel', 'Matihanina')}</p>
           <p className="authPricingPlanPrice">{tr('150 000 Ar / mois', '150 000 Ar / volana')}</p>
           <ul className="authPricingPlanList">
             <li>{tr('Montant fixe par mois.', 'Sanda raikitra isam-bolana.')}</li>
             <li>{tr('Annonces illimitées pendant abonnement actif.', 'Filazana tsy voafetra mandritra ny famandrihana mavitrika.')}</li>
             <li>{tr('Badge PRO et visibilité renforcée.', 'Badge PRO sy fahitana matanjaka kokoa.')}</li>
-            {/* <li>{tr('Si l’abonnement est suspendu, vos annonces déjà publiées restent visibles.', 'Raha miato ny famandrihana dia mbola hita ireo filazana efa navoaka.')}</li> */}
           </ul>
         </article>
       </div>
