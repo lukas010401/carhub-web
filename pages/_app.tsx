@@ -2,7 +2,7 @@ import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import Layout from '@/components/Layout';
 import { I18nProvider } from '@/lib/i18n';
-import '@/styles/globals.css';
+import '../styles/globals.css';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -10,7 +10,9 @@ export default function App({ Component, pageProps }: AppProps) {
       <Head>
         <title>CarHub Madagascar</title>
         <meta name="description" content="CarHub Madagascar - Achat et vente de voitures d’occasion" />
-        <link rel="icon" type="image/svg+xml" href="/logo-carhub.svg" />
+        <link rel="icon" type="image/png" href="/logo-carhub-final.png" />
+        <link rel="shortcut icon" href="/logo-carhub-final.png" />
+        <link rel="apple-touch-icon" href="/logo-carhub-final.png" />
       </Head>
       <I18nProvider>
         <Layout>

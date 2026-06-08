@@ -39,7 +39,7 @@ const footerCategoryLinks = [
 const footerHelpLinks = [
   { fr: 'Acheter une voiture', mg: 'Hividy fiara', href: '/cars' },
   { fr: 'Vendre ma voiture', mg: 'Hivarotra fiara', href: '/login' },
-  { fr: 'Tarifs', mg: 'Vidiny', href: '/tarifs' },
+  { fr: 'Tarifs', mg: 'Vidiny', href: '/pricing' },
   { fr: 'Espace vendeur', mg: 'Faritra mpivarotra', href: '/dashboard' },
   { fr: 'Connexion', mg: 'Hiditra', href: '/login' },
   { fr: 'Inscription', mg: 'Hisoratra anarana', href: '/register' },
@@ -104,7 +104,7 @@ export default function Layout({ children }: Props) {
         <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3">
           <Link href="/">
             <a className="inline-flex items-center gap-2" aria-label="CarHub Madagascar">
-              <img src="/logo-carhub.svg" alt="CarHub" className="h-auto w-40 md:w-44" />
+              <img src="/logo-carhub-final.png" alt="CarHub" className="h-auto w-40 md:w-44" />
               <span className="hidden text-xs uppercase tracking-[0.2em] text-muted-foreground md:inline">Madagascar</span>
             </a>
           </Link>
@@ -134,7 +134,7 @@ export default function Layout({ children }: Props) {
             </div>
             <Link href="/cars"><a className="rounded-md border border-transparent px-3 py-2 text-sm hover:border-border hover:bg-muted/70">{tr('Rechercher', 'Hitady')}</a></Link>
             {showSellButton && (
-              <Link href="/tarifs"><a className="rounded-md border border-transparent px-3 py-2 text-sm hover:border-border hover:bg-muted/70">{tr('Tarifs', 'Vidiny')}</a></Link>
+              <Link href="/pricing"><a className="rounded-md border border-transparent px-3 py-2 text-sm hover:border-border hover:bg-muted/70">{tr('Tarifs', 'Vidiny')}</a></Link>
             )}
             {showSellButton && (
               <Link href="/login">

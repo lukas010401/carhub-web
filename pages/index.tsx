@@ -312,7 +312,7 @@ export default function HomePage() {
               </button>
             </div>
             <p className="homeSellPricingLink" style={{ margin: 0 }}>
-              <Link href="/tarifs"><a>{tr('Comparer les offres particulier et professionnel', 'Ampitahao ny tolotra olon-tsotra sy matihanina')}</a></Link>
+              <Link href="/pricing"><a>{tr('Comparer les offres particulier et professionnel', 'Ampitahao ny tolotra olon-tsotra sy matihanina')}</a></Link>
             </p>
           </div>
         </article>

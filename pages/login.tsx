@@ -81,7 +81,7 @@ export default function LoginPage() {
             {tr('Connectez-vous pour gerer vos annonces et suivre vos actions.', 'Midira hanaraha-maso ny filazanao sy ny hetsikao.')}
           </p>
           <p className="muted" style={{ margin: 0 }}>
-            <Link href="/tarifs"><a style={{ color: '#1d4ed8', fontWeight: 600 }}>{tr('Voir le détail des offres particulier/professionnel', 'Jereo ny antsipirihan’ny tolotra olon-tsotra/matihanina')}</a></Link>
+            <Link href="/pricing"><a style={{ color: '#1d4ed8', fontWeight: 600 }}>{tr('Voir le détail des offres particulier/professionnel', 'Jereo ny antsipirihan’ny tolotra olon-tsotra/matihanina')}</a></Link>
           </p>
         </div>
 

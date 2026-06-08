@@ -511,7 +511,12 @@ export default function DashboardPage() {
                       </button>
                     )}
                     {x.status === 'Sold' && (
-                      <img src="/status-badges/vendu.png" alt="Vendu" className="soldBadgeImg" loading="lazy" />
+                      <img
+                        src={lang === 'mg' ? '/status-badges/lafo.png' : '/status-badges/vendu.png'}
+                        alt={lang === 'mg' ? 'Lafo' : 'Vendu'}
+                        className="soldBadgeImg"
+                        loading="lazy"
+                      />
                     )}
                     {canRelist && (
                       <button

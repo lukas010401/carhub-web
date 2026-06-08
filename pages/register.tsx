@@ -58,7 +58,7 @@ export default function RegisterPage() {
             {tr('Creez votre compte pour publier vos annonces auto sur CarHub.', 'Mamorona kaonty hamoahanao filazana fiara ao CarHub.')}
           </p>
           <p className="muted" style={{ margin: 0 }}>
-            <Link href="/tarifs"><a style={{ color: '#1d4ed8', fontWeight: 600 }}>{tr('Comparer les offres particulier/professionnel', 'Ampitahao ny tolotra olon-tsotra/matihanina')}</a></Link>
+            <Link href="/pricing"><a style={{ color: '#1d4ed8', fontWeight: 600 }}>{tr('Comparer les offres particulier/professionnel', 'Ampitahao ny tolotra olon-tsotra/matihanina')}</a></Link>
           </p>
         </div>
 
