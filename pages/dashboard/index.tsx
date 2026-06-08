@@ -214,9 +214,9 @@ export default function DashboardPage() {
     if (raw === 'created') {
       setNotice({ tone: 'success', text: 'Annonce créée avec succès.' });
     } else if (raw === 'beta-created') {
-      setNotice({ tone: 'success', text: 'Annonce crÉÉe. La publication est gratuite pendant la bêta.' });
+      setNotice({ tone: 'success', text: 'Annonce créée. La publication est gratuite pendant la bêta.' });
     } else if (raw === 'beta-published') {
-      setNotice({ tone: 'success', text: 'Annonce publiÉe gratuitement dans le cadre de la bêta.' });
+      setNotice({ tone: 'success', text: 'Annonce publiée gratuitement dans le cadre de la bêta.' });
     } else if (raw === 'updated') {
       setNotice({ tone: 'success', text: 'Annonce mise à jour avec succès.' });
     }

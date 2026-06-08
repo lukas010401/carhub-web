@@ -15,6 +15,15 @@ function getBrandMonogram(name: string): string {
   return `${chunks[0][0] || ''}${chunks[1][0] || ''}`.toUpperCase();
 }
 
+function slugifyBrand(value: string): string {
+  return value
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
 function slugifyCategory(value: string): string {
   return value
     .normalize('NFD')
@@ -28,6 +37,10 @@ function getCategoryImageSrc(category: MetadataItem | undefined, fallbackName: s
   if (category?.imageUrl) return category.imageUrl;
   const slug = category?.slug || slugifyCategory(fallbackName);
   return `/category-images/${slug}.svg`;
+}
+
+function getBrandLogoSrc(brand: Pick<MetadataItem, 'name' | 'logoUrl'>): string {
+  return brand.logoUrl || `/brand-logos/${slugifyBrand(brand.name)}.svg`;
 }
 
 export default function HomePage() {
@@ -239,11 +252,27 @@ export default function HomePage() {
             <Link key={b.id} href={`/cars?BrandId=${b.id}`}>
               <a className="ghostBtn popularBrandChip">
                 <span className="popularBrandName">{b.name}</span>
-                {b.logoUrl ? (
-                  <img className="popularBrandLogoImg" src={b.logoUrl || '/brand-logos/default.svg'} alt={`Logo ${b.name}`} loading="lazy" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = '/brand-logos/default.svg'; }} />
-                ) : (
-                  <span className="popularBrandLogo" aria-hidden="true">{getBrandMonogram(b.name)}</span>
-                )}
+                <img
+                  className="popularBrandLogoImg"
+                  src={getBrandLogoSrc(b)}
+                  alt={`Logo ${b.name}`}
+                  loading="lazy"
+                  onError={(e) => {
+                    const fallback = e.currentTarget.dataset.fallbackApplied === 'true';
+                    if (!fallback) {
+                      e.currentTarget.dataset.fallbackApplied = 'true';
+                      e.currentTarget.src = '/brand-logos/default.svg';
+                      return;
+                    }
+
+                    const wrapper = e.currentTarget.parentElement?.querySelector('.popularBrandLogo') as HTMLElement | null;
+                    if (wrapper) wrapper.style.display = 'inline-flex';
+                    e.currentTarget.style.display = 'none';
+                  }}
+                />
+                <span className="popularBrandLogo" aria-hidden="true" style={{ display: 'none' }}>
+                  {getBrandMonogram(b.name)}
+                </span>
               </a>
             </Link>
           ))}
