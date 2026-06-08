@@ -1139,12 +1139,14 @@ export default function AdminPage() {
       {tab === 'pilotage' && (
         <section className="grid gap-3">
           <h2 className="text-xl font-semibold">Dashboard admin</h2>
-          <div className="sellerStatsGrid">
-            <article className="sellerStatCard"><p className="sellerStatLabel">En attente</p><p className="sellerStatValue">{kpis?.pending ?? 0}</p></article>
-            <article className="sellerStatCard"><p className="sellerStatLabel">Publiées</p><p className="sellerStatValue">{kpis?.published ?? 0}</p></article>
-            <article className="sellerStatCard"><p className="sellerStatLabel">Rejetées</p><p className="sellerStatValue">{kpis?.rejected ?? 0}</p></article>
-            <article className="sellerStatCard"><p className="sellerStatLabel">Vendues</p><p className="sellerStatValue">{kpis?.sold ?? 0}</p></article>
-          </div>
+            <div className="sellerStatsGrid">
+              <article className="sellerStatCard"><p className="sellerStatLabel">En attente</p><p className="sellerStatValue">{kpis?.pending ?? 0}</p></article>
+              <article className="sellerStatCard"><p className="sellerStatLabel">Publiées</p><p className="sellerStatValue">{kpis?.published ?? 0}</p></article>
+              <article className="sellerStatCard"><p className="sellerStatLabel">Rejetées</p><p className="sellerStatValue">{kpis?.rejected ?? 0}</p></article>
+              <article className="sellerStatCard"><p className="sellerStatLabel">Vendues</p><p className="sellerStatValue">{kpis?.sold ?? 0}</p></article>
+              <article className="sellerStatCard"><p className="sellerStatLabel">Visites site</p><p className="sellerStatValue">{kpis?.siteVisits ?? 0}</p></article>
+              <article className="sellerStatCard"><p className="sellerStatLabel">Vendeurs inscrits</p><p className="sellerStatValue">{kpis?.sellerSignups ?? 0}</p></article>
+            </div>
 
           <div className="card cardBody" style={{ overflowX: 'auto' }}>
             <h3>Logs actions admin</h3>

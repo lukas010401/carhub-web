@@ -111,6 +111,8 @@ export interface AdminKpis {
   published: number;
   rejected: number;
   sold: number;
+  siteVisits: number;
+  sellerSignups: number;
 }
 
 export interface AdminLogItem {

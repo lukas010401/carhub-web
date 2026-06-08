@@ -82,6 +82,42 @@ export default function Layout({ children }: Props) {
     setShowCookieInfo(accepted !== '1');
   }, []);
 
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const dayKey = 'carhub_site_visit_day';
+    const sessionKeyStorage = 'carhub_site_visit_session';
+    const today = new Date().toISOString().slice(0, 10);
+    const lastTrackedDay = window.localStorage.getItem(dayKey);
+    if (lastTrackedDay === today) return;
+
+    let sessionKey = window.localStorage.getItem(sessionKeyStorage);
+    if (!sessionKey) {
+      sessionKey = typeof window.crypto?.randomUUID === 'function'
+        ? window.crypto.randomUUID()
+        : `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+      window.localStorage.setItem(sessionKeyStorage, sessionKey);
+    }
+
+    const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || '';
+    fetch(`${apiBaseUrl}/api/public/analytics/visit`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        sessionKey,
+        path: window.location.pathname
+      })
+    })
+      .then((response) => {
+        if (response.ok) {
+          window.localStorage.setItem(dayKey, today);
+        }
+      })
+      .catch(() => {
+        // Non-bloquant: le comptage reprendra au prochain chargement réussi.
+      });
+  }, [router.asPath]);
+
   const logout = () => {
     clearTokens();
     setUser(null);
