@@ -5,4 +5,3 @@ npm-debug.log
 Dockerfile
 deployment
 .env.local
-.env.production

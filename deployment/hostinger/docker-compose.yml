@@ -16,6 +16,10 @@ services:
     build:
       context: /opt/carhub/web-src
       dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_BASE_URL: https://api.carhub-mg.com
+        NEXT_PUBLIC_BETA_MODE: "true"
+        NEXT_PUBLIC_SITE_URL: https://carhub-mg.com
     container_name: carhub-web
     env_file:
       - /opt/carhub/.env.web
