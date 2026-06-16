@@ -1,0 +1,29 @@
+services:
+  api:
+    build:
+      context: /opt/carhub/api-src
+      dockerfile: Dockerfile
+    container_name: carhub-api
+    env_file:
+      - /opt/carhub/.env.api
+    restart: unless-stopped
+    ports:
+      - "5000:8080"
+    volumes:
+      - carhub_uploads:/app/wwwroot/uploads
+
+  web:
+    build:
+      context: /opt/carhub/web-src
+      dockerfile: Dockerfile
+    container_name: carhub-web
+    env_file:
+      - /opt/carhub/.env.web
+    depends_on:
+      - api
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+
+volumes:
+  carhub_uploads:

@@ -21,7 +21,7 @@ export default function ContactPage() {
           <article className="sellerTrustPanel">
             <h3>{tr('Email support', 'Email fanampiana')}</h3>
             <p>Pour toute demande générale et assistance compte.</p>
-            <p><a href="mailto:contact@carhub.mg" style={{ color: '#1d4ed8', fontWeight: 700 }}>contact@carhub.mg</a></p>
+            <p><a href="mailto:contact@carhub-mg.com" style={{ color: '#1d4ed8', fontWeight: 700 }}>contact@carhub-mg.com</a></p>
           </article>
 
           <article className="sellerTrustPanel">
@@ -39,7 +39,7 @@ export default function ContactPage() {
           <article className="sellerTrustPanel">
             <h3>Signalement</h3>
             <p>Annonce suspecte, fraude, abus ou contenu illicite.</p>
-            <p><a href="mailto:abuse@carhub.mg" style={{ color: '#1d4ed8', fontWeight: 700 }}>abuse@carhub.mg</a></p>
+            <p><a href="mailto:abuse@carhub-mg.com" style={{ color: '#1d4ed8', fontWeight: 700 }}>abuse@carhub-mg.com</a></p>
           </article>
         </div>
       </section>

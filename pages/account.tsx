@@ -297,7 +297,7 @@ export default function AccountPage() {
           Pour le moment, la mise à jour complète du profil se fait via le support.
         </p>
         <p style={{ margin: 0 }}>
-          Contact: <a href="mailto:contact@carhub.mg" style={{ color: '#1d4ed8', fontWeight: 600 }}>contact@carhub.mg</a>
+          Contact: <a href="mailto:contact@carhub-mg.com" style={{ color: '#1d4ed8', fontWeight: 600 }}>contact@carhub-mg.com</a>
         </p>
       </section>
     </section>
