@@ -1,7 +1,8 @@
 import Link from 'next/link';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { apiFetch } from '@/lib/api';
+import { getCurrentUser } from '@/lib/auth';
 import AuthPricingCard from '@/components/AuthPricingCard';
 import { useI18n } from '@/lib/i18n';
 import { isBetaMode } from '@/lib/beta';
@@ -19,12 +20,22 @@ export default function RegisterPage() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
+  useEffect(() => {
+    const user = getCurrentUser();
+    if (!user) return;
+    router.replace(user.role === 'Admin' ? '/admin' : '/dashboard');
+  }, [router]);
+
   const withCountryCode = (value: string): string => {
     const raw = value.trim();
     if (!raw) return '';
     const digits = raw.replace(/\D/g, '').replace(/^0+/, '');
     return digits ? `+261${digits}` : '';
   };
+
+  if (typeof window !== 'undefined' && getCurrentUser()) {
+    return null;
+  }
 
   const submit = async (e: FormEvent) => {
     e.preventDefault();

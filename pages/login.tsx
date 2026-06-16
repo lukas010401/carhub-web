@@ -1,8 +1,8 @@
 import Link from 'next/link';
-import { FormEvent, useMemo, useState } from 'react';
+import { FormEvent, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import { apiFetch } from '@/lib/api';
-import { saveTokens } from '@/lib/auth';
+import { getCurrentUser, saveTokens } from '@/lib/auth';
 import AuthPricingCard from '@/components/AuthPricingCard';
 import { useI18n } from '@/lib/i18n';
 import { isBetaMode } from '@/lib/beta';
@@ -18,6 +18,12 @@ export default function LoginPage() {
   const [resending, setResending] = useState(false);
   const [emailNotConfirmed, setEmailNotConfirmed] = useState(false);
 
+  useEffect(() => {
+    const user = getCurrentUser();
+    if (!user) return;
+    router.replace(user.role === 'Admin' ? '/admin' : '/dashboard');
+  }, [router]);
+
   const registeredInfo = useMemo(() => {
     if (!router.isReady) return '';
     const registered = typeof router.query.registered === 'string' ? router.query.registered : '';
@@ -27,6 +33,10 @@ export default function LoginPage() {
       ? `Compte créé pour ${qEmail}. Confirmez votre email puis connectez-vous.`
       : 'Compte créé. Confirmez votre email puis connectez-vous.';
   }, [router.isReady, router.query.email, router.query.registered]);
+
+  if (typeof window !== 'undefined' && getCurrentUser()) {
+    return null;
+  }
 
   const submit = async (e: FormEvent) => {
     e.preventDefault();
