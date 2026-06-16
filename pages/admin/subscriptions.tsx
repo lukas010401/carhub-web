@@ -160,7 +160,7 @@ export default function AdminSubscriptionsPage() {
           <section className="card cardBody betaInfoCard">
             <h1 className="text-2xl font-bold" style={{ margin: 0 }}>Abonnements professionnels</h1>
             <p className="betaInfoText">
-              Le module abonnement est masquÉ pendant la bêta. Les comptes professionnels restent visibles, sans facturation active.
+              Le module abonnement est masqué pendant la bêta. Les comptes professionnels restent visibles, sans facturation active.
             </p>
           </section>
         </>

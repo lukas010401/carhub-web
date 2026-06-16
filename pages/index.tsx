@@ -188,7 +188,7 @@ export default function HomePage() {
       title: tr('Offre vendeur professionnel', 'Tolotra mpivarotra matihanina'),
       description: tr(
         betaMode
-          ? 'Les vendeurs professionnels sont identifiÉs pendant la bêta, sans facturation active pour le lancement.'
+          ? 'Les vendeurs professionnels sont identifiés pendant la bêta, sans facturation active pour le lancement.'
           : 'Abonnement pro à 150 000 Ar/mois: annonces illimitées pendant la période active, badge PRO et meilleure visibilité dans les recherches.',
         betaMode
           ? 'Fantatra mazava ny mpivarotra matihanina mandritra ny bêta, nefa tsy mbola misy fandoavana mavitrika.'

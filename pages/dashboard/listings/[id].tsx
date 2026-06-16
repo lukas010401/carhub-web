@@ -284,11 +284,11 @@ export default function EditListingPage() {
           </div>
           <div className="formField">
             <label className="formLabel" htmlFor="edit-listing-price">Prix (Ar)</label>
-            <input id="edit-listing-price" type="number" value={form.price} onChange={e => set('price', Number(e.target.value))} required disabled={saving || isReadonlyStatus} />
+            <input id="edit-listing-price" type="number" value={form.price || ''} onChange={e => set('price', Number(e.target.value))} required disabled={saving || isReadonlyStatus} />
           </div>
           <div className="formField">
             <label className="formLabel" htmlFor="edit-listing-mileage">Kilométrage</label>
-            <input id="edit-listing-mileage" type="number" value={form.mileage} onChange={e => set('mileage', Number(e.target.value))} required disabled={saving || isReadonlyStatus} />
+            <input id="edit-listing-mileage" type="number" value={form.mileage || ''} onChange={e => set('mileage', Number(e.target.value))} required disabled={saving || isReadonlyStatus} />
           </div>
           <div className="formField">
             <label className="formLabel" htmlFor="edit-listing-phone">Téléphone</label>

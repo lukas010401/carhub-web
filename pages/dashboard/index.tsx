@@ -359,7 +359,7 @@ export default function DashboardPage() {
         <p className="muted" style={{ margin: 0 }}>
           {betaMode
             ? tr(
-              'La publication est gratuite pendant la bêta. Les conditions commerciales dÉfinitives seront communiquÉes plus tard.',
+              'La publication est gratuite pendant la bêta. Les conditions commerciales définitives seront communiquées plus tard.',
               'Maimaim-poana ny famoahana mandritra ny bêta. Hambara aoriana ny fepetra ara-barotra farany.'
             )
             : subscriptionInfo?.message || ''}
@@ -591,7 +591,6 @@ export default function DashboardPage() {
     </div>
   );
 }
-
 
 
 

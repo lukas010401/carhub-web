@@ -35,7 +35,7 @@ export default function SellerSubscriptionPage() {
     if (betaMode) {
       setData({
         accountType: user.accountType || 'Individual',
-        message: 'Le module abonnement est dÉsactivÉ pendant la bêta.'
+        message: 'Le module abonnement est désactivé pendant la bêta.'
       });
       setLoading(false);
       return;
@@ -79,8 +79,8 @@ export default function SellerSubscriptionPage() {
         <section className="card cardBody betaInfoCard">
           <h2 className="betaInfoTitle">Module abonnement en pause pendant la bêta</h2>
           <p className="betaInfoText">
-            Les paiements et renouvellements sont temporairement dÉsactivÉs dans cette interface.
-            Les vendeurs professionnels restent identifiÉs sur la plateforme, mais la facturation n’est pas active pendant la pÉriode de lancement.
+            Les paiements et renouvellements sont temporairement désactivés dans cette interface.
+            Les vendeurs professionnels restent identifiés sur la plateforme, mais la facturation n’est pas active pendant la période de lancement.
           </p>
         </section>
       </div>

@@ -1,4 +1,4 @@
-import Link from 'next/link';
+﻿import Link from 'next/link';
 import { useI18n } from '@/lib/i18n';
 
 type Props = {
@@ -13,8 +13,8 @@ export default function BetaBanner({ compact = false, showPricingLink = true, ti
 
   const resolvedTitle = title || tr('CarHub.MG est actuellement en phase bêta.', 'CarHub.MG dia mbola ao anatin’ny dingana bêta.');
   const resolvedMessage = message || tr(
-    'La publication des annonces est gratuite pendant notre période de lancement.',
-    'Maimaim-poana ny famoahana filazana mandritra ny vanim-potoanan’ny fanombohana.'
+    'Pendant la bêta, il n’y a pas encore de différence tarifaire entre compte particulier et compte professionnel : la publication est gratuite pour tous. Le compte professionnel reste proposé dès maintenant, car il sera ensuite lié à une formule d’abonnement mensuel.',
+    'Mandritra ny bêta, mbola tsy misy fahasamihafana ara-tarifa eo amin’ny kaonty tsotra sy ny kaonty matihanina: maimaim-poana ho an’ny rehetra ny famoahana filazana. Atolotra sahady ny kaonty matihanina, satria hifandray amin’ny famandrihana isam-bolana izy io ao aoriana ao.'
   );
 
   return (

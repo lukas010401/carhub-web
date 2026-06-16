@@ -20,7 +20,7 @@ export default function ConfirmEmailPage() {
 
     apiFetch<any>(`/api/auth/confirm-email?token=${encodeURIComponent(token)}`)
       .then((res) => {
-        setSuccess(res?.message || 'Email confirmÉ avec succÉs.');
+        setSuccess(res?.message || 'Email confirmé avec succès.');
       })
       .catch((e: any) => {
         const msg = String(e?.message || '');

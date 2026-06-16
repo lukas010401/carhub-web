@@ -214,11 +214,11 @@ export default function NewListingPage() {
           </div>
           <div className="formField">
             <label className="formLabel" htmlFor="listing-price">Prix (Ar)</label>
-            <input id="listing-price" type="number" value={form.price} onChange={e => set('price', Number(e.target.value))} required disabled={saving} />
+            <input id="listing-price" type="number" value={form.price || ''} onChange={e => set('price', Number(e.target.value))} required disabled={saving} />
           </div>
           <div className="formField">
             <label className="formLabel" htmlFor="listing-mileage">Kilométrage</label>
-            <input id="listing-mileage" type="number" value={form.mileage} onChange={e => set('mileage', Number(e.target.value))} required disabled={saving} />
+            <input id="listing-mileage" type="number" value={form.mileage || ''} onChange={e => set('mileage', Number(e.target.value))} required disabled={saving} />
           </div>
           <div className="formField formFieldWide">
             <label className="formLabel" htmlFor="listing-phone">Téléphone</label>
