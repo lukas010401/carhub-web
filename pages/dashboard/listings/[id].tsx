@@ -1,11 +1,13 @@
-﻿import { FormEvent, useEffect, useMemo, useState } from 'react';
+import { FormEvent, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import ImageUploader from '@/components/ImageUploader';
 import BackLink from '@/components/ui/back-link';
-import { apiFetch, uploadFiles } from '@/lib/api';
+import { apiFetch, uploadFiles, UploadProgress } from '@/lib/api';
+import UploadStatus from '@/components/UploadStatus';
+import { MAX_LISTING_PHOTOS } from '@/lib/image-upload';
 import { getCurrentUser } from '@/lib/auth';
 import { resolveMediaUrl } from '@/lib/media';
-import { ListingPayload, MetadataItem } from '@/lib/types';
+import { ListingImage, ListingPayload, MetadataItem } from '@/lib/types';
 import { fuelTypeLabel, transmissionTypeLabel } from '@/lib/vehicle-labels';
 import { listingStatusLabel } from '@/lib/ui-labels';
 import { useI18n } from '@/lib/i18n';
@@ -88,11 +90,15 @@ function toPayload(data: any): ListingPayload {
   };
 }
 
-function toImageUrls(data: any): string[] {
+function toImages(data: any): ListingImage[] {
   const raw = Array.isArray(data?.images) ? data.images : [];
   return raw
-    .map((x: any) => resolveMediaUrl(x?.url || x?.Url || ''))
-    .filter((x: string) => !!x);
+    .map((x: any) => ({
+      id: String(x?.id || x?.Id || ''),
+      url: resolveMediaUrl(x?.url || x?.Url || ''),
+      displayOrder: Number(x?.displayOrder || x?.DisplayOrder || 0)
+    }))
+    .filter((x: ListingImage) => !!x.id && !!x.url);
 }
 
 function toStatus(value: any): ListingUiStatus {
@@ -122,11 +128,13 @@ export default function EditListingPage() {
   const [cities, setCities] = useState<MetadataItem[]>([]);
   const [categories, setCatégories] = useState<MetadataItem[]>([]);
   const [files, setFiles] = useState<File[]>([]);
-  const [existingImages, setExistingImages] = useState<string[]>([]);
+  const [existingImages, setExistingImages] = useState<ListingImage[]>([]);
+  const [deletingImageId, setDeletingImageId] = useState<string | null>(null);
   const [listingStatus, setListingStatus] = useState<ListingUiStatus>('Unknown');
   const [rejectionReason, setRejectionReason] = useState('');
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState<UploadProgress | null>(null);
   const [error, setError] = useState('');
   const [notice, setNotice] = useState<{ tone: 'info' | 'success' | 'error'; text: string } | null>(null);
   const [listingMeta, setListingMeta] = useState<{ createdAt?: string; updatedAt?: string; publishedAt?: string }>({});
@@ -154,7 +162,7 @@ export default function EditListingPage() {
     try {
       const data = await apiFetch<any>(`/api/seller/listings/${listingId}`, {}, true);
       setForm(toPayload(data));
-      setExistingImages(toImageUrls(data));
+      setExistingImages(toImages(data));
       setListingStatus(toStatus(data?.status));
       setRejectionReason(String(data?.rejectionReason || '').trim());
       setListingMeta({
@@ -213,6 +221,7 @@ export default function EditListingPage() {
       setNotice({ tone: 'error', text: e?.message || 'Opération impossible.' });
     } finally {
       setSaving(false);
+      setUploadProgress(null);
     }
   };
 
@@ -235,7 +244,7 @@ export default function EditListingPage() {
         body: JSON.stringify(payload)
       }, true);
       if (files.length > 0) {
-        await uploadFiles(`/api/seller/listings/${id}/images`, files);
+        await uploadFiles(`/api/seller/listings/${id}/images`, files, setUploadProgress);
       }
       router.push('/dashboard?notice=updated');
     } catch (e: any) {
@@ -243,6 +252,27 @@ export default function EditListingPage() {
       setNotice({ tone: 'error', text: e?.message || "Impossible d’enregistrer les modifications" });
     } finally {
       setSaving(false);
+      setUploadProgress(null);
+    }
+  };
+
+  const deleteImage = async (image: ListingImage) => {
+    if (!id || typeof id !== 'string' || isReadonlyStatus) return;
+    if (!window.confirm('Supprimer définitivement cette photo ?')) return;
+
+    setDeletingImageId(image.id);
+    setError('');
+    setNotice(null);
+    try {
+      await apiFetch(`/api/seller/listings/${id}/images/${image.id}`, { method: 'DELETE' }, true);
+      setExistingImages(current => current.filter(item => item.id !== image.id));
+      setNotice({ tone: 'success', text: 'Photo supprimée.' });
+    } catch (e: any) {
+      const message = e?.message || 'Impossible de supprimer la photo.';
+      setError(message);
+      setNotice({ tone: 'error', text: message });
+    } finally {
+      setDeletingImageId(null);
     }
   };
 
@@ -357,11 +387,28 @@ export default function EditListingPage() {
           <div className="listingImagesPreview">
             <p className="listingImagesPreviewTitle">Photos actuelles</p>
             <div className="listingImagesGrid listingImagesGridLarge">
-              {existingImages.map((url, idx) => (
-                <div key={`${url}-${idx}`} className="listingImageThumb listingImageThumbLarge">
-                  <a href={url} target="_blank" rel="noreferrer">
-                    <img src={url} alt={`Photo actuelle ${idx + 1}`} loading="lazy" />
+              {existingImages.map((image, idx) => (
+                <div key={image.id} className="listingImageThumb listingImageThumbLarge listingImageThumbEditable">
+                  <a href={image.url} target="_blank" rel="noreferrer">
+                    <img src={image.url} alt={`Photo actuelle ${idx + 1}`} loading="lazy" />
                   </a>
+                  {!isReadonlyStatus && (
+                    <button
+                      type="button"
+                      className="listingImageDeleteBtn"
+                      onClick={() => deleteImage(image)}
+                      disabled={saving || deletingImageId !== null}
+                      aria-label={`Supprimer la photo ${idx + 1}`}
+                    >
+                      {deletingImageId === image.id ? (
+                        <span className="listingImageDeleteSpinner" aria-hidden="true" />
+                      ) : (
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                          <path d="M9 3h6l1 2h4v2H4V5h4l1-2Zm-2 6h10l-.8 11H7.8L7 9Zm3 2v7h2v-7h-2Zm4 0v7h2v-7h-2Z" />
+                        </svg>
+                      )}
+                    </button>
+                  )}
                 </div>
               ))}
             </div>
@@ -369,7 +416,8 @@ export default function EditListingPage() {
         ) : (
           <p className="sellerNotice sellerNoticeInfo">Aucune photo actuelle pour cette annonce.</p>
         )}
-        {!isReadonlyStatus && <ImageUploader onSelect={setFiles} />}
+        <UploadStatus progress={uploadProgress} />
+        {!isReadonlyStatus && <ImageUploader onSelect={setFiles} disabled={saving} maxFiles={Math.max(0, MAX_LISTING_PHOTOS - existingImages.length)} />}
         {previewUrls.length > 0 && (
           <div className="listingImagesPreview">
             <p className="listingImagesPreviewTitle">Nouvelles photos à ajouter</p>

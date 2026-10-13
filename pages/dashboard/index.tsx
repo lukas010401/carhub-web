@@ -282,7 +282,7 @@ export default function DashboardPage() {
     return Array.from({ length: end - adjustedStart + 1 }, (_, i) => adjustedStart + i);
   }, [safePage, totalPages]);
 
-  const runCardAction = async (id: string, action: 'submit' | 'mark-sold') => {
+  const runCardAction = async (id: string, action: 'submit' | 'mark-sold' | 'delete') => {
     if (action === 'mark-sold') {
       const ok = window.confirm('Marquer cette annonce comme vendue ?');
       if (!ok) return;
@@ -291,18 +291,28 @@ export default function DashboardPage() {
       const ok = window.confirm('Remettre cette annonce en ligne ?');
       if (!ok) return;
     }
+    if (action === 'delete') {
+      const ok = window.confirm('Supprimer définitivement ce brouillon ?');
+      if (!ok) return;
+    }
 
     setBusyId(id);
     setError('');
     try {
-      const suffix = action === 'mark-sold' ? 'mark-sold' : 'submit';
-      await apiFetch(`/api/seller/listings/${id}/${suffix}`, { method: 'POST' }, true);
+      if (action === 'delete') {
+        await apiFetch(`/api/seller/listings/${id}`, { method: 'DELETE' }, true);
+      } else {
+        const suffix = action === 'mark-sold' ? 'mark-sold' : 'submit';
+        await apiFetch(`/api/seller/listings/${id}/${suffix}`, { method: 'POST' }, true);
+      }
       await loadPage(safePage);
       setNotice({
         tone: 'success',
-        text: action === 'mark-sold'
-          ? 'Annonce marquée comme vendue.'
-          : 'Annonce publiée avec succès.'
+        text: action === 'delete'
+          ? 'Brouillon supprimé.'
+          : action === 'mark-sold'
+            ? 'Annonce marquée comme vendue.'
+            : 'Annonce publiée avec succès.'
       });
     } catch (e: any) {
       setError(e?.message || 'Opération impossible.');
@@ -520,6 +530,17 @@ export default function DashboardPage() {
                         disabled={isBusy}
                       >
                         {betaMode ? tr('Publier', 'Avoahy') : tr('Mettre en ligne', 'Alefa hohamarinina')}
+                      </button>
+                    )}
+                    {x.status === 'Draft' && (
+                      <button
+                        type="button"
+                        className="ghostBtn"
+                        onClick={() => runCardAction(x.id, 'delete')}
+                        disabled={isBusy}
+                        style={{ color: '#b42318', borderColor: '#fecaca' }}
+                      >
+                        {isBusy ? 'Suppression...' : 'Supprimer'}
                       </button>
                     )}
                     {x.status === 'Sold' && (

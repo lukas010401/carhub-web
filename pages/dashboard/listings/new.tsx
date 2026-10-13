@@ -1,8 +1,9 @@
-import { FormEvent, useEffect, useMemo, useState } from 'react';
+import { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import ImageUploader from '@/components/ImageUploader';
 import BackLink from '@/components/ui/back-link';
-import { apiFetch, uploadFiles } from '@/lib/api';
+import { apiFetch, uploadFiles, UploadProgress } from '@/lib/api';
+import UploadStatus from '@/components/UploadStatus';
 import { getCurrentUser } from '@/lib/auth';
 import { resolveMediaUrl } from '@/lib/media';
 import { ListingPayload, MetadataItem } from '@/lib/types';
@@ -65,6 +66,8 @@ export default function NewListingPage() {
   const [categories, setCategories] = useState<MetadataItem[]>([]);
   const [files, setFiles] = useState<File[]>([]);
   const [saving, setSaving] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState<UploadProgress | null>(null);
+  const createdIdRef = useRef<string | null>(null);
   const [error, setError] = useState('');
   const previewUrls = useMemo(() => files.map((file) => URL.createObjectURL(file)), [files]);
 
@@ -136,8 +139,14 @@ export default function NewListingPage() {
         transmissionType: transmissionTypeToApi(form.transmissionType)
       };
 
-      const created = await apiFetch<any>('/api/seller/listings', { method: 'POST', body: JSON.stringify(payload) }, true);
-      if (files.length > 0) await uploadFiles(`/api/seller/listings/${created.id}/images`, files);
+      if (!createdIdRef.current) {
+        const created = await apiFetch<{ id: string }>('/api/seller/listings', { method: 'POST', body: JSON.stringify(payload) }, true);
+        createdIdRef.current = created.id;
+      } else {
+        await apiFetch(`/api/seller/listings/${createdIdRef.current}`, { method: 'PUT', body: JSON.stringify(payload) }, true);
+      }
+      const created = { id: createdIdRef.current };
+      if (files.length > 0) await uploadFiles(`/api/seller/listings/${created.id}/images`, files, setUploadProgress);
       if (betaMode) {
         try {
           await apiFetch(`/api/seller/listings/${created.id}/submit`, { method: 'POST' }, true);
@@ -172,6 +181,7 @@ export default function NewListingPage() {
       setError(e?.message || "Impossible de créer l’annonce.");
     } finally {
       setSaving(false);
+      setUploadProgress(null);
     }
   };
 
@@ -198,6 +208,12 @@ export default function NewListingPage() {
       </section>
       <form className="card cardBody grid" onSubmit={submit}>
         {error && <p className="sellerNotice sellerNoticeError">{error}</p>}
+        {error && createdIdRef.current && (
+          <p className="sellerNotice sellerNoticeInfo">
+            Votre brouillon est conservé. Vous pouvez réessayer ou{' '}
+            <a href={`/dashboard/listings/${createdIdRef.current}`}>ouvrir le brouillon et vérifier ses photos</a>.
+          </p>
+        )}
         {(brands.length === 0 || cities.length === 0 || categories.length === 0) && (
           <p className="sellerNotice sellerNoticeInfo">
             Certaines données de référence sont vides. Vérifie les métadonnées (marques, villes, catégories).
@@ -302,7 +318,8 @@ export default function NewListingPage() {
           <label className="formLabel" htmlFor="listing-description">Description</label>
           <textarea id="listing-description" value={form.description} onChange={e => set('description', e.target.value)} required disabled={saving} />
         </div>
-        <ImageUploader onSelect={setFiles} />
+        <ImageUploader onSelect={setFiles} disabled={saving} />
+        <UploadStatus progress={uploadProgress} />
         {previewUrls.length > 0 && (
           <div className="listingImagesPreview">
             <p className="listingImagesPreviewTitle">Nouvelles photos</p>

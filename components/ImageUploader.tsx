@@ -1,10 +1,12 @@
 import { ChangeEvent, useRef, useState } from 'react';
+import { MAX_LISTING_PHOTOS, MAX_SOURCE_IMAGE_MB } from '@/lib/image-upload';
 
 interface Props {
   onSelect: (files: File[]) => void;
   maxFiles?: number;
   maxFileSizeMb?: number;
   inputId?: string;
+  disabled?: boolean;
 }
 
 const ACCEPTED_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp'];
@@ -16,9 +18,10 @@ function formatSize(bytes: number): string {
 
 export default function ImageUploader({
   onSelect,
-  maxFiles = 20,
-  maxFileSizeMb = 8,
-  inputId = 'images'
+  maxFiles = MAX_LISTING_PHOTOS,
+  maxFileSizeMb = MAX_SOURCE_IMAGE_MB,
+  inputId = 'images',
+  disabled = false
 }: Props) {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [files, setFiles] = useState<File[]>([]);
@@ -50,7 +53,7 @@ export default function ImageUploader({
 
     for (const file of selected) {
       const ext = (file.name.split('.').pop() || '').toLowerCase();
-      const isAccepted = ACCEPTED_EXTENSIONS.includes(ext) || file.type.startsWith('image/');
+      const isAccepted = ACCEPTED_EXTENSIONS.includes(ext);
       if (!isAccepted) {
         rejected.push(`${file.name}: format non pris en charge`);
         continue;
@@ -74,11 +77,12 @@ export default function ImageUploader({
   return (
     <div className="uploader">
       <label htmlFor={inputId}>Photos</label>
-      <p className="uploaderHint">Formats: jpg, jpeg, png, webp. Max {maxFiles} photos, {maxFileSizeMb} MB par photo.</p>
+      <p className="uploaderHint">Formats: jpg, jpeg, png, webp. Max {maxFiles} photos, {maxFileSizeMb} MB par photo avant optimisation. Les photos sont réduites automatiquement avant envoi.</p>
       <input
         ref={fileInputRef}
         id={inputId}
         type="file"
+        disabled={disabled || maxFiles === 0}
         multiple
         accept=".jpg,.jpeg,.png,.webp"
         onChange={handle}
@@ -88,12 +92,12 @@ export default function ImageUploader({
         <div className="uploaderList">
           <div className="uploaderListHeader">
             <p>{files.length} photo(s) sélectionnée(s)</p>
-            <button type="button" className="ghostBtn" onClick={clearAll}>Vider</button>
+            <button type="button" className="ghostBtn" onClick={clearAll} disabled={disabled}>Vider</button>
           </div>
           {files.map((file, idx) => (
             <div key={`${file.name}-${idx}`} className="uploaderItem">
               <span>{file.name} ({formatSize(file.size)})</span>
-              <button type="button" className="ghostBtn" onClick={() => removeAt(idx)}>Retirer</button>
+              <button type="button" className="ghostBtn" onClick={() => removeAt(idx)} disabled={disabled}>Retirer</button>
             </div>
           ))}
         </div>

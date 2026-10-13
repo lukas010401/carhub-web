@@ -562,6 +562,58 @@
     padding: 0.35rem;
   }
 
+  .listingImageThumbEditable {
+    position: relative;
+  }
+
+  .listingImageDeleteBtn {
+    position: absolute;
+    right: 0.55rem;
+    top: 0.55rem;
+    width: 2rem;
+    height: 2rem;
+    padding: 0.45rem;
+    border: 1px solid rgba(255, 255, 255, 0.82);
+    border-radius: 50%;
+    background: rgba(15, 23, 42, 0.68);
+    color: #b42318;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.16);
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    transition: background-color 160ms ease, transform 160ms ease;
+  }
+
+  .listingImageDeleteBtn svg {
+    width: 1rem;
+    height: 1rem;
+    fill: currentColor;
+  }
+
+  .listingImageDeleteBtn:hover:not(:disabled) {
+    background: #b42318;
+    transform: scale(1.05);
+  }
+
+  .listingImageDeleteBtn:disabled {
+    cursor: wait;
+    opacity: 0.7;
+  }
+
+  .listingImageDeleteSpinner {
+    width: 0.9rem;
+    height: 0.9rem;
+    border: 2px solid rgba(255, 255, 255, 0.45);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: listingImageDeleteSpin 700ms linear infinite;
+  }
+
+  @keyframes listingImageDeleteSpin {
+    to { transform: rotate(360deg); }
+  }
+
   .adminReviewCard {
     display: grid;
     grid-template-columns: 220px minmax(0, 1fr);
